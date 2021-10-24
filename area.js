@@ -17,8 +17,11 @@ const area = (
   ) || "overview="
 ).split("=");
 const areaNHS = (
-  params.find((p) => p.startsWith("nhsRegion=") || p.startsWith("nhsTrust=")) ||
-  area.join("=").replace("region=", "nhsRegion=")
+  params.find((p) =>
+    p.startsWith("nation=") ||
+    p.startsWith("nhsRegion=") ||
+    p.startsWith("nhsTrust=")
+  ) || area.join("=").replace("region=", "nhsRegion=")
 ).split("=");
 
 const layout = {
@@ -160,10 +163,10 @@ function setStyleProp(selector, name, value) {
 function load(filters, fields, callback) {
   Plotly.d3.json(
     "https://api.coronavirus.data.gov.uk/v1/data?filters=" +
-      filters +
-      "&structure=[" +
-      fields.map((name) => "%22" + name + "%22").join(",") +
-      "]",
+    filters +
+    "&structure=[" +
+    fields.map((name) => "%22" + name + "%22").join(",") +
+    "]",
     function (error, res) {
       const recent = getRecent(res.data, RECENT_DAYS);
       callback(recent);
