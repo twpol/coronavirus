@@ -14,9 +14,30 @@
     <h1>Coronavirus dashboard</h1>
 
     <h2>Area summary</h2>
-    <label for=area-input class="form-label">Choose an area:</label>
-    <input id=area-input class="form-control" list=area-datalist placeholder="Type to search...">
-    <datalist id=area-datalist></datalist>
+    <div class=row>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for=area-primary-input class="form-label">Choose primary area (required):</label>
+                <input id=area-primary-input class="form-control" list=area-primary-datalist
+                    placeholder="Type to search...">
+                <datalist id=area-primary-datalist></datalist>
+            </div>
+            <div class="mb-3">
+                <label for=area-healthcare-input class="form-label">Override healthcare area (optional):</label>
+                <input id=area-healthcare-input class="form-control" list=area-healthcare-datalist
+                    placeholder="Type to search...">
+                <datalist id=area-healthcare-datalist></datalist>
+            </div>
+            <button id=area-submit class="btn btn-primary">Open area</button>
+        </div>
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for=area-postcode-input class="form-label">Enter a postcode:</label>
+                <input id=area-postcode-input class="form-control" placeholder="">
+            </div>
+            <button id=area-postcode-submit class="btn btn-primary">Search by postcode</button>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
