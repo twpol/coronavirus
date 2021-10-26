@@ -236,6 +236,7 @@ load(
     "newCasesBySpecimenDateRollingSum",
     "newCasesBySpecimenDateRollingRate",
     "uniqueCasePositivityBySpecimenDateRollingSum",
+    "cumPeopleVaccinatedCompleteByVaccinationDate",
     "uniquePeopleTestedBySpecimenDateRollingSum",
     "newVirusTests",
     "newDeaths28DaysByDeathDate",
@@ -290,6 +291,13 @@ load(
       });
       document.getElementById("summary-tests").after("²");
     }
+    plot({
+      id: "vaccinated",
+      data,
+      field: "cumPeopleVaccinatedCompleteByVaccinationDate",
+      type: "rollingSum",
+      population,
+    });
     plot({
       id: "deaths",
       data: data.slice(UNSTABLE_DAYS_DEATHS),
