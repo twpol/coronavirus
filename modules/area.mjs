@@ -61,7 +61,7 @@ export function getAreaFromQueryString() {
     ) || primary.join("=").replace("region=", "nhsRegion=")
   ).split("=");
   return {
-    primary: [primary[1], primary[0]],
-    healthcare: [healthcare[1], healthcare[0]],
+    primary: [decodeURIComponent(primary[1]), primary[0]],
+    healthcare: [decodeURIComponent(healthcare[1]), healthcare[0]],
   };
 }
