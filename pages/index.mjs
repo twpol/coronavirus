@@ -1,30 +1,11 @@
-const API_PROXY = "https://james-ross.co.uk/temp/proxy?cache=86400&url=";
-const API_BASE = "https://coronavirus.data.gov.uk/api/generic/";
+import {
+  getAreaQueryString,
+  getAreas,
+  getSmallestArea,
+} from "../modules/area.mjs";
+import { getElements } from "../modules/elements.mjs";
 
-const AREA_TYPES_PRIMARY = ["ltla", "utla", "region", "nation", "overview"];
-const AREA_TYPES_HEALTHCARE = ["nhsTrust", "nhsRegion", "nation", "overview"];
-
-const e = {
-  area: {
-    primary: {
-      list: document.getElementById("area-primary-datalist"),
-      input: document.getElementById("area-primary-input"),
-    },
-    healthcare: {
-      list: document.getElementById("area-healthcare-datalist"),
-      input: document.getElementById("area-healthcare-input"),
-    },
-    postcode: {
-      input: document.getElementById("area-postcode-input"),
-      submit: document.getElementById("area-postcode-submit"),
-    },
-    submit: document.getElementById("area-submit"),
-  },
-};
-
-function fetchApi(path, options) {
-  return fetch(API_PROXY + encodeURIComponent(API_BASE + path), options);
-}
+const e = getElements();
 
 async function load() {
   const primaryAreas = [
@@ -89,44 +70,6 @@ async function areaOpen() {
     const area2 = await getSmallestArea(area.primary[1], area.primary[2]);
     location.href = linkBase + getAreaQueryString(area2);
   }
-}
-
-async function getSmallestArea(type, code) {
-  const data = await (await fetchApi(`code/${type}/${code}`)).json();
-  return getSmallestAreaFromCode(data);
-}
-
-function getSmallestAreaFromCode(code) {
-  const primaryAreaType = AREA_TYPES_PRIMARY.find((a) => code[a]);
-  const healthcareAreaType = AREA_TYPES_HEALTHCARE.find((a) => code[a]);
-  return {
-    primary: [
-      code[primaryAreaType + "Name"],
-      primaryAreaType,
-      code[primaryAreaType],
-    ],
-    healthcare: [
-      code[healthcareAreaType + "Name"],
-      healthcareAreaType,
-      code[healthcareAreaType],
-    ],
-  };
-}
-
-function getAreaQueryString(area) {
-  return [
-    [area.primary[1], area.primary[0]].join("="),
-    area.primary[0] !== area.healthcare[0]
-      ? [area.healthcare[1], area.healthcare[0]].join("=")
-      : undefined,
-  ].join("&");
-}
-
-async function getAreas(areaType) {
-  return (await (await fetchApi(`area/${areaType}`)).json()).map((area) => ({
-    areaType,
-    ...area,
-  }));
 }
 
 setTimeout(load);
