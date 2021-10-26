@@ -3,9 +3,6 @@ const UNSTABLE_DAYS_CASES = 4;
 const UNSTABLE_DAYS_DEATHS = 4;
 const ROLLING_DAYS = 7;
 
-const MICRO_COVID_URL =
-  "https://www.microcovid.org/?useManualEntry=1&population=<population>&casesPastWeek=<cases-per-week>&casesIncreasingPercentage=<cases-increase-percent>&positiveCasePercentage=<test-positivity>";
-
 const params = location.search.substring(1).split("&");
 const area = (
   params.find(
@@ -97,17 +94,6 @@ function smooth(trace, count) {
 function plusMinus(number) {
   const text = String(number);
   return number >= 0 ? "+" + text : text;
-}
-
-function getNumber(selector, data) {
-  const elements = document.querySelectorAll(selector);
-  if (elements.length === 0) {
-    console.warn("getNumber: No elements matched " + selector);
-  }
-  if (elements.length) {
-    const text = data ? elements[0].dataset[data] : elements[0].innerText;
-    return parseFloat(text.replace(/,/g, "").replace("no data", "0"));
-  }
 }
 
 function setText(selector, text) {
@@ -270,15 +256,6 @@ load(
     ];
     const population = Math.round((100000 * exampleSum) / exampleRate);
 
-    const xxx_lastWeeksCases = unpack(veryRecent, "newCasesBySpecimenDate")
-      .filter(function (num) {
-        return num !== "null";
-      })
-      .slice(0, ROLLING_DAYS)
-      .reduce(function (sum, value) {
-        return sum + Number(value);
-      }, 0);
-
     setText("#summary-population", population.toLocaleString());
 
     plot({
@@ -287,20 +264,6 @@ load(
       field: "newCasesBySpecimenDate",
       population,
     });
-    // plot({
-    //   id: "cases",
-    //   data: data,
-    //   field: "newCasesBySpecimenDateRollingSum",
-    //   type: "rollingSum",
-    //   population,
-    // });
-    // plot({
-    //   id: "cases",
-    //   data: data,
-    //   field: "newCasesBySpecimenDateRollingRate",
-    //   type: "rollingRate",
-    //   population,
-    // });
     plot({
       id: "positivity",
       data,
@@ -333,24 +296,6 @@ load(
       field: "newDeaths28DaysByDeathDate",
       population,
     });
-
-    setProp(
-      "#url-micro-covid",
-      "href",
-      MICRO_COVID_URL.replace("<population>", getNumber("#summary-population"))
-        .replace("<cases-per-week>", getNumber("#summary-cases-sum"))
-        .replace(
-          "<cases-increase-percent>",
-          Math.max(
-            0,
-            getNumber("#summary-cases-change > span", "percentChange")
-          )
-        )
-        .replace(
-          "<test-positivity>",
-          Math.max(0.01, getNumber("#summary-positivity-sum"))
-        )
-    );
 
     load(
       "areaType=" + areaNHS[0] + (areaNHS[1] ? ";areaName=" + areaNHS[1] : ""),
