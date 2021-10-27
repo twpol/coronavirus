@@ -22,7 +22,7 @@ async function load() {
       "value",
       `${area.areaName} / ${area.areaType} / ${area.areaCode}`
     );
-    e.area.primary.list.append(option);
+    e.summary.primary.list.append(option);
   }
 
   const healthcareAreas = [
@@ -38,32 +38,34 @@ async function load() {
       "value",
       `${area.areaName} / ${area.areaType} / ${area.areaCode}`
     );
-    e.area.healthcare.list.append(option);
+    e.summary.healthcare.list.append(option);
   }
 
-  e.area.postcode.submit.addEventListener("click", searchPostcode);
-  e.area.submit.addEventListener("click", areaOpen);
+  e.summary.postcode.submit.addEventListener("click", searchPostcode);
+  e.summary.submit.addEventListener("click", areaOpen);
 }
 
 async function searchPostcode() {
   const area = await getSmallestArea(
     "postcode",
-    e.area.postcode.input.value.replace(/\s+/g, "")
+    e.summary.postcode.input.value.replace(/\s+/g, "")
   );
-  e.area.primary.input.value = area.primary.join(" / ");
-  e.area.healthcare.input.value = area.healthcare.join(" / ");
+  e.summary.primary.input.value = area.primary.join(" / ");
+  e.summary.healthcare.input.value = area.healthcare.join(" / ");
 }
 
 async function areaOpen() {
-  if (!e.area.primary.input.value) return;
+  if (!e.summary.primary.input.value) return;
   const area = {
-    primary: e.area.primary.input.value.split(" / "),
-    healthcare: e.area.healthcare.input.value.split(" / "),
+    primary: e.summary.primary.input.value.split(" / "),
+    healthcare: e.summary.healthcare.input.value.split(" / "),
   };
-  e.area.primary.input.value = "";
-  e.area.healthcare.input.value = "";
+  e.summary.primary.input.value = "";
+  e.summary.healthcare.input.value = "";
 
-  const linkBase = `area${location.hostname === "localhost" ? ".html" : ""}?`;
+  const linkBase = `summary${
+    location.hostname === "localhost" ? ".html" : ""
+  }?`;
   if (area.healthcare[0]) {
     location.href = linkBase + getAreaQueryString(area);
   } else {

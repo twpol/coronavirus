@@ -7,35 +7,35 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link href="index.css">
-    <title>Coronavirus dashboard</title>
+    <title>Coronavirus</title>
 </head>
 
 <body class="container-fluid">
-    <h1>Coronavirus dashboard</h1>
+    <h1>Coronavirus</h1>
 
-    <h2>Area summary</h2>
+    <h2>Summary</h2>
     <div class=row>
         <div class="col-md-6">
             <div class="mb-3">
-                <label for=area-primary-input class="form-label">Choose primary area (required):</label>
-                <input id=area-primary-input class="form-control" list=area-primary-list
+                <label for=summary-primary-input class="form-label">Choose primary area (required):</label>
+                <input id=summary-primary-input class="form-control" list=summary-primary-list
                     placeholder="Type to search...">
-                <datalist id=area-primary-list></datalist>
+                <datalist id=summary-primary-list></datalist>
             </div>
             <div class="mb-3">
-                <label for=area-healthcare-input class="form-label">Override healthcare area (optional):</label>
-                <input id=area-healthcare-input class="form-control" list=area-healthcare-list
+                <label for=summary-healthcare-input class="form-label">Override healthcare area (optional):</label>
+                <input id=summary-healthcare-input class="form-control" list=summary-healthcare-list
                     placeholder="Type to search...">
-                <datalist id=area-healthcare-list></datalist>
+                <datalist id=summary-healthcare-list></datalist>
             </div>
-            <button id=area-submit class="btn btn-primary">Open area</button>
+            <button id=summary-submit class="btn btn-primary">Open summary</button>
         </div>
         <div class="col-md-6">
             <div class="mb-3">
-                <label for=area-postcode-input class="form-label">Enter a postcode:</label>
-                <input id=area-postcode-input class="form-control" placeholder="">
+                <label for=summary-postcode-input class="form-label">Enter a postcode:</label>
+                <input id=summary-postcode-input class="form-control" placeholder="">
             </div>
-            <button id=area-postcode-submit class="btn btn-primary">Search by postcode</button>
+            <button id=summary-postcode-submit class="btn btn-primary">Search by postcode</button>
         </div>
     </div>
 

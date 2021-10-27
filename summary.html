@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link href="index.css">
+    <title>Coronavirus summary</title>
+</head>
+
+<body class="container-fluid">
+    <h1>Coronavirus summary</h1>
+    <ul>
+        <li>Primary data for <span id="area-primary">[loading]</span></li>
+        <li>Healthcare data for <span id="area-healthcare">[loading]</span></li>
+        <li>Data up to <span id="area-date">[loading]</span></li>
+    </ul>
+
+    <h2>Summary</h2>
+    <p>Last 7 days | Estimated population: <span id="summary-population"><em>no data</em></span> | ¹ Total tests
+        performed | ² Unique people tested
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scole="col">Cases</th>
+                <th scole="col">Positivity</th>
+                <th scole="col">Vaccinated</th>
+                <th scole="col">Admissions</th>
+                <th scole="col">Patients</th>
+                <th scole="col">Deaths</th>
+                <th scole="col"><span id="summary-tests">Tests</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="summary-cases-rate"><span><em>no data</em></span> / 100k</td>
+                <td id="summary-positivity-sum"><span><em>no data</em></span> %</td>
+                <td id="summary-vaccinated-rate"><span><em>no data</em></span> / 100k</td>
+                <td id="summary-admissions-rate"><span><em>no data</em></span> / 100k</td>
+                <td id="summary-patients-rate"><span><em>no data</em></span> / 100k</td>
+                <td id="summary-deaths-rate"><span><em>no data</em></span> / 100k</td>
+                <td id="summary-tests-rate"><span><em>no data</em></span> / 100k</td>
+            </tr>
+            <tr>
+                <td id="summary-cases-change"><span><em>no data</em></span> / 100k</td>
+                <td id="summary-positivity-change"><span><em>no data</em></span> pt</td>
+                <td id="summary-vaccinated-change"><span><em>no data</em></span> / 100k</td>
+                <td id="summary-admissions-change"><span><em>no data</em></span> / 100k</td>
+                <td id="summary-patients-change"><span><em>no data</em></span> / 100k</td>
+                <td id="summary-deaths-change"><span><em>no data</em></span> / 100k</td>
+                <td id="summary-tests-change"><span><em>no data</em></span> / 100k</td>
+            </tr>
+            <tr>
+                <td id="summary-cases-sum"><span><em>no data</em></span></td>
+                <td><em>n/a</em></td>
+                <td id="summary-vaccinated-sum"><span><em>no data</em></span></td>
+                <td id="summary-admissions-sum"><span><em>no data</em></span></td>
+                <td id="summary-patients-sum"><span><em>no data</em></span></td>
+                <td id="summary-deaths-sum"><span><em>no data</em></span></td>
+                <td id="summary-tests-sum"><span><em>no data</em></span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Graphs</h2>
+    <div class="row">
+        <div class="col-4">
+            <h3>Cases / 100k</h3>
+            <div id="graph-cases"></div>
+        </div>
+        <div class="col-4">
+            <h3>Positivity %</h3>
+            <div id="graph-positivity"></div>
+        </div>
+        <div class="col-4">
+            <h3>Vaccinated / 100k</h3>
+            <div id="graph-vaccinated"></div>
+        </div>
+        <div class="col-4">
+            <h3>Admissions / 100k</h3>
+            <div id="graph-admissions"></div>
+        </div>
+        <div class="col-4">
+            <h3>Patients / 100k</h3>
+            <div id="graph-patients"></div>
+        </div>
+        <div class="col-4">
+            <h3>Deaths / 100k</h3>
+            <div id="graph-deaths"></div>
+        </div>
+        <div class="col-4">
+            <h3>Tests / 100k</h3>
+            <div id="graph-tests"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="pages/summary.mjs" type="module"></script>
+</body>
+
+</html>
