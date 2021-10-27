@@ -38,7 +38,9 @@ export function getAreaQueryString(area) {
     area.primary[0] !== area.healthcare[0]
       ? [area.healthcare[1], area.healthcare[0]].join("=")
       : undefined,
-  ].join("&");
+  ]
+    .filter((component) => !!component)
+    .join("&");
 }
 
 export function getAreaFromQueryString() {
@@ -46,11 +48,12 @@ export function getAreaFromQueryString() {
   const primary = (
     params.find(
       (p) =>
+        p.startsWith("overview=") ||
         p.startsWith("nation=") ||
         p.startsWith("region=") ||
-        p.startsWith("utla") ||
-        p.startsWith("ltla")
-    ) || "overview="
+        p.startsWith("utla=") ||
+        p.startsWith("ltla=")
+    ) || "="
   ).split("=");
   const healthcare = (
     params.find(
