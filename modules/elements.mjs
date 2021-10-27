@@ -64,3 +64,13 @@ export function setChangeBackground(selector, change) {
   }
   setStyleProp(selector, "color", "black");
 }
+
+export function getPage(name) {
+  return `${name}${location.hostname === "localhost" ? ".html" : ""}`;
+}
+
+export function $(name, ...children) {
+  const element = document.createElement(name);
+  element.append(...children);
+  return element;
+}

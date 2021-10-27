@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link href="index.css">
+    <title>Coronavirus history</title>
+</head>
+
+<body class="container-fluid">
+    <h1>Coronavirus history</h1>
+    <ul>
+        <li>Primary data for <span id="area-primary">[loading]</span></li>
+        <li>Healthcare data for <span id="area-healthcare">[loading]</span></li>
+        <li>Data up to <span id="data-date">[loading]</span></li>
+    </ul>
+
+    <h2>History</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scole="col">Week of</th>
+                <th scole="col">Cases<br>/ 100k</th>
+                <th scole="col">Positivity<br>%</th>
+                <th scole="col">Vaccinated<br>/ 100k</th>
+                <th scole="col">Admissions<br>/ 100k</th>
+                <th scole="col">Patients<br>/ 100k</th>
+                <th scole="col">Deaths<br>/ 100k</th>
+            </tr>
+        </thead>
+        <tbody id="history-tbody">
+        </tbody>
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="pages/history.mjs" type="module"></script>
+</body>
+
+</html>

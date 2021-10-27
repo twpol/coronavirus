@@ -34,9 +34,9 @@ function getSmallestAreaFromCode(code) {
 
 export function getAreaQueryString(area) {
   return [
-    [area.primary[1], area.primary[0]].join("="),
+    [area.primary[1], encodeURIComponent(area.primary[0])].join("="),
     area.primary[0] !== area.healthcare[0]
-      ? [area.healthcare[1], area.healthcare[0]].join("=")
+      ? [area.healthcare[1], encodeURIComponent(area.healthcare[0])].join("=")
       : undefined,
   ]
     .filter((component) => !!component)

@@ -3,6 +3,7 @@ import {
   getAreas,
   getSmallestArea,
 } from "../modules/area.mjs";
+import { getPage } from "../modules/elements.mjs";
 import { getElements } from "../modules/elements.mjs";
 
 const e = getElements();
@@ -63,14 +64,11 @@ async function areaOpen() {
   e.summary.primary.input.value = "";
   e.summary.healthcare.input.value = "";
 
-  const linkBase = `summary${
-    location.hostname === "localhost" ? ".html" : ""
-  }?`;
   if (area.healthcare[0]) {
-    location.href = linkBase + getAreaQueryString(area);
+    location.href = `${getPage("summary")}?${getAreaQueryString(area)}`;
   } else {
     const area2 = await getSmallestArea(area.primary[1], area.primary[2]);
-    location.href = linkBase + getAreaQueryString(area2);
+    location.href = `${getPage("summary")}?${getAreaQueryString(area2)}`;
   }
 }
 
