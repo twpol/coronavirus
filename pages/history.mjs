@@ -1,6 +1,7 @@
 import { getAreaFromQueryString } from "../modules/area.mjs";
 import { loadAreaData } from "../modules/data.mjs";
 import { $, getElements, setText } from "../modules/elements.mjs";
+import { getMicroCovidLink } from "../modules/microcovid.mjs";
 
 const e = getElements();
 const area = getAreaFromQueryString();
@@ -24,6 +25,16 @@ for (let i = 0; i < 26; i++) {
     $(
       "tr",
       $("td", date),
+      $(
+        "td",
+        data.cases[index]
+          ? $(
+              "a",
+              { target: "_blank", href: getMicroCovidLink(data, index) },
+              "microCOVID"
+            )
+          : {}
+      ),
       $("td", ...format(data, "cases", index)),
       $("td", ...format(data, "positivity", index)),
       $("td", ...format(data, "vaccinated", index)),

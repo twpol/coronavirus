@@ -71,6 +71,15 @@ export function getPage(name) {
 
 export function $(name, ...children) {
   const element = document.createElement(name);
+  if (
+    children.length &&
+    Object.getPrototypeOf(children[0]) === Object.prototype
+  ) {
+    const attributes = children.shift();
+    for (const attribute of Object.keys(attributes)) {
+      element.setAttribute(attribute, attributes[attribute]);
+    }
+  }
   element.append(...children);
   return element;
 }
