@@ -27,13 +27,11 @@ for (let i = 0; i < 26; i++) {
       $("td", date),
       $(
         "td",
-        data.cases[index]
-          ? $(
-              "a",
-              { target: "_blank", href: getMicroCovidLink(data, index) },
-              "microCOVID"
-            )
-          : {}
+        $(
+          "a",
+          { target: "_blank", href: getMicroCovidLink(data, index) },
+          "microCOVID"
+        )
       ),
       $("td", ...format(data, "cases", index)),
       $("td", ...format(data, "positivity", index)),
