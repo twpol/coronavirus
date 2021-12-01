@@ -9,7 +9,7 @@ const INPUT_FIELDS = {
     "cumPeopleVaccinatedCompleteByVaccinationDate",
     "newDeaths28DaysByDeathDate",
     "uniquePeopleTestedBySpecimenDateRollingSum",
-    "newVirusTests",
+    "newVirusTestsByPublishDate",
   ],
   healthcare: ["newAdmissions", "hospitalCases"],
 };
@@ -54,7 +54,7 @@ const OUTPUT_FIELDS = [
   },
   {
     name: "tests2",
-    field: "newVirusTests",
+    field: "newVirusTestsByPublishDate",
     type: rollingRate,
   },
 ];
