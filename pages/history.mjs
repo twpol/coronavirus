@@ -1,10 +1,13 @@
-import { getAreaFromQueryString } from "../modules/area.mjs";
+import {
+  getAreaFromQueryString,
+  getAreaQueryString,
+} from "../modules/area.mjs";
 import {
   getIndexForDate,
   getRowByIndexExtrapolate,
   loadAreaData,
 } from "../modules/data.mjs";
-import { $, getElements, setText } from "../modules/elements.mjs";
+import { $, getElements, getPage, setText } from "../modules/elements.mjs";
 import { params, setQueryParam } from "../modules/location.mjs";
 
 const e = getElements();
@@ -31,6 +34,9 @@ document.title = [date, area.primary[0], document.title]
 e.area.primary.innerText = area.primary[0];
 e.area.healthcare.innerText = area.healthcare[0];
 e.data.date.innerText = data.date[0];
+e.nav.summary.href = `${getPage("summary")}?${getAreaQueryString(area)}`;
+
+setText("#population", data.population.toLocaleString());
 
 if (date) {
   let index = getIndexForDate(data, date);
