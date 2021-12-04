@@ -9,6 +9,7 @@ import {
 } from "../modules/data.mjs";
 import { $, getElements, getPage, setText } from "../modules/elements.mjs";
 import { params, setQueryParam } from "../modules/location.mjs";
+import { getMicroCovidLink } from "../modules/microcovid.mjs";
 
 const e = getElements();
 
@@ -17,9 +18,6 @@ e.date.input.value = date;
 e.date.submit.addEventListener("click", () =>
   setQueryParam("date", e.date.input.value)
 );
-// e.microCovid.submit.addEventListener("click", () => {
-//   location.href = getMicroCovidLink(data, index, e.microCovid.input.value);
-// });
 
 const area = getAreaFromQueryString();
 const data = await loadAreaData(area);
@@ -43,9 +41,9 @@ if (date) {
   while (addDataRow(index)) {
     index += 7;
   }
-
-  // e.microCovid.submit.disabled = false;
   e.history.table.style.display = "";
+
+  e.microCovid.link.href = getMicroCovidLink(data, getIndexForDate(data, date));
 }
 
 function addDataRow(index) {
