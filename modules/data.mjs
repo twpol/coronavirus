@@ -164,3 +164,53 @@ function scale(data, scale) {
 function NaNs(count) {
   return Array.from(new Array(count)).map(() => NaN);
 }
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+const MIDNIGHT_UTC = "T00:00:00Z";
+
+export function getIndexForDate(data, date) {
+  const date0 = new Date(data.date[0] + MIDNIGHT_UTC);
+  const date1 = new Date(date + MIDNIGHT_UTC);
+  return (date0 - date1) / DAY_MS;
+}
+
+export function getDateForIndex(data, index) {
+  const date = new Date(
+    Date.parse(data.date[0] + MIDNIGHT_UTC) - DAY_MS * index
+  );
+  return date.toISOString().substring(0, 10);
+}
+
+export function getRowByIndex(data, index) {
+  const output = Object.create(null);
+  for (const prop of Object.keys(data)) {
+    output[prop] = Array.isArray(data[prop]) ? data[prop][index] : data[prop];
+  }
+  return output;
+}
+
+export function getRowByIndexExtrapolate(data, index) {
+  const row = getRowByIndex(data, index);
+  if (!row.cases || !row.positivity) {
+    const latestIndex = getDataClosestIndex(data, "");
+    const diff = latestIndex - index;
+    const row1 = getRowByIndex(data, latestIndex + 0);
+    const row2 = getRowByIndex(data, latestIndex + 7);
+    for (const prop of Object.keys(row)) {
+      if (!row[prop] && typeof row1[prop] === "number") {
+        row[prop] = row1[prop] + ((row1[prop] - row2[prop]) * diff) / 7;
+      }
+    }
+    row.date = getDateForIndex(data, index);
+    row.extrapolated = true;
+  }
+  return row;
+}
+
+export function getDataClosestIndex(data, date) {
+  let index = Math.max(0, data.date.indexOf(date));
+  while (!data.cases[index] || !data.positivity[index]) {
+    index++;
+  }
+  return index;
+}

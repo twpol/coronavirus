@@ -19,11 +19,28 @@
     </ul>
 
     <h2>History</h2>
-    <table class="table">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label for=date-input class="form-label">Choose a date (required):</label>
+                <input id=date-input class="form-control" type="date">
+            </div>
+            <button id=date-submit class="btn btn-primary">Set date</button>
+        </div>
+        <!-- <div class="col-md-6">
+            <div class="mb-3">
+                <label for=microCovid-input class="form-label">Enter a microCOVID link (optional):</label>
+                <input id=microCovid-input class="form-control">
+            </div>
+            <button id=microCovid-submit class="btn btn-primary" disabled>Open microCOVID</button>
+        </div> -->
+    </div>
+
+    <h2>Data</h2>
+    <table id=history-table class="table" style="display: none;">
         <thead>
             <tr>
-                <th scole="col">Week of</th>
-                <th scole="col">microCOVID</th>
+                <th scole="col">Date</th>
                 <th scole="col">Cases<br>/ 100k</th>
                 <th scole="col">Positivity<br>%</th>
                 <th scole="col">Vaccinated<br>/ 100k</th>
@@ -35,6 +52,9 @@
         <tbody id="history-tbody">
         </tbody>
     </table>
+    <p class="fst-italic">
+        Rows in this style have been very poorly extrapolated from the nearest available data
+    </p>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
