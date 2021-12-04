@@ -13,29 +13,30 @@
 <body class="container-fluid">
     <h1>Coronavirus</h1>
 
-    <h2>Summary</h2>
+    <h2>By area</h2>
     <div class=row>
         <div class="col-md-6">
             <div class="mb-3">
-                <label for=summary-primary-input class="form-label">Choose primary area (required):</label>
-                <input id=summary-primary-input class="form-control" list=summary-primary-list
+                <label for=area-primary-input class="form-label">Choose primary area (required):</label>
+                <input id=area-primary-input class="form-control" list=area-primary-list
                     placeholder="Type to search...">
-                <datalist id=summary-primary-list></datalist>
+                <datalist id=area-primary-list></datalist>
             </div>
             <div class="mb-3">
-                <label for=summary-healthcare-input class="form-label">Override healthcare area (optional):</label>
-                <input id=summary-healthcare-input class="form-control" list=summary-healthcare-list
+                <label for=area-healthcare-input class="form-label">Override healthcare area (optional):</label>
+                <input id=area-healthcare-input class="form-control" list=area-healthcare-list
                     placeholder="Type to search...">
-                <datalist id=summary-healthcare-list></datalist>
+                <datalist id=area-healthcare-list></datalist>
             </div>
-            <button id=summary-submit class="btn btn-primary">Open summary</button>
+            <button id=area-summary-submit class="btn btn-primary">Open summary</button>
+            <button id=area-history-submit class="btn btn-primary">Open history</button>
         </div>
         <div class="col-md-6">
             <div class="mb-3">
-                <label for=summary-postcode-input class="form-label">Enter a postcode:</label>
-                <input id=summary-postcode-input class="form-control" placeholder="">
+                <label for=postcode-input class="form-label">Enter a postcode:</label>
+                <input id=postcode-input class="form-control" placeholder="">
             </div>
-            <button id=summary-postcode-submit class="btn btn-primary">Search by postcode</button>
+            <button id=postcode-submit class="btn btn-primary">Search by postcode</button>
         </div>
     </div>
 

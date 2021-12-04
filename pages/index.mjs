@@ -23,7 +23,7 @@ async function load() {
       "value",
       `${area.areaName} / ${area.areaType} / ${area.areaCode}`
     );
-    e.summary.primary.list.append(option);
+    e.area.primary.list.append(option);
   }
 
   const healthcareAreas = [
@@ -39,36 +39,45 @@ async function load() {
       "value",
       `${area.areaName} / ${area.areaType} / ${area.areaCode}`
     );
-    e.summary.healthcare.list.append(option);
+    e.area.healthcare.list.append(option);
   }
 
-  e.summary.postcode.submit.addEventListener("click", searchPostcode);
-  e.summary.submit.addEventListener("click", areaOpen);
+  e.postcode.submit.addEventListener("click", searchPostcode);
+  e.area.summary.submit.addEventListener("click", areaOpenSummary);
+  e.area.history.submit.addEventListener("click", areaOpenHistory);
 }
 
 async function searchPostcode() {
   const area = await getSmallestArea(
     "postcode",
-    e.summary.postcode.input.value.replace(/\s+/g, "")
+    e.postcode.input.value.replace(/\s+/g, "")
   );
-  e.summary.primary.input.value = area.primary.join(" / ");
-  e.summary.healthcare.input.value = area.healthcare.join(" / ");
+  e.area.primary.input.value = area.primary.join(" / ");
+  e.area.healthcare.input.value = area.healthcare.join(" / ");
 }
 
-async function areaOpen() {
-  if (!e.summary.primary.input.value) return;
+async function areaOpenSummary() {
+  await areaOpen("summary");
+}
+
+async function areaOpenHistory() {
+  await areaOpen("history");
+}
+
+async function areaOpen(type) {
+  if (!e.area.primary.input.value) return;
   const area = {
-    primary: e.summary.primary.input.value.split(" / "),
-    healthcare: e.summary.healthcare.input.value.split(" / "),
+    primary: e.area.primary.input.value.split(" / "),
+    healthcare: e.area.healthcare.input.value.split(" / "),
   };
-  e.summary.primary.input.value = "";
-  e.summary.healthcare.input.value = "";
+  e.area.primary.input.value = "";
+  e.area.healthcare.input.value = "";
 
   if (area.healthcare[0]) {
-    location.href = `${getPage("summary")}?${getAreaQueryString(area)}`;
+    location.href = `${getPage(type)}?${getAreaQueryString(area)}`;
   } else {
     const area2 = await getSmallestArea(area.primary[1], area.primary[2]);
-    location.href = `${getPage("summary")}?${getAreaQueryString(area2)}`;
+    location.href = `${getPage(type)}?${getAreaQueryString(area2)}`;
   }
 }
 
