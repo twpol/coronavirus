@@ -46,6 +46,10 @@ if (date) {
   e.history.table.style.display = "";
 
   updateMicroCovidLink();
+
+  if (params.get("openMicroCovid")) {
+    autoOpenMicroCovid();
+  }
 }
 
 function updateMicroCovidLink() {
@@ -54,6 +58,25 @@ function updateMicroCovidLink() {
     getIndexForDate(data, date),
     e.microCovid.input.value
   );
+}
+
+function autoOpenMicroCovid() {
+  let seconds = 10;
+  e.microCovid.auto.countdown.innerText = seconds;
+  e.microCovid.auto.style.display = "";
+
+  const timer = setInterval(() => {
+    seconds--;
+    e.microCovid.auto.countdown.innerText = seconds;
+    if (seconds <= 0) {
+      e.microCovid.link.click();
+    }
+  }, 1000);
+
+  e.microCovid.auto.cancel.addEventListener("click", () => {
+    clearInterval(timer);
+    e.microCovid.auto.style.display = "none";
+  });
 }
 
 function addDataRow(index) {
