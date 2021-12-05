@@ -14,7 +14,11 @@ export function getMicroCovidLink(data, index, url) {
 
   params.set("population", population);
   params.set("casesPastWeek", casesPerWeek.toFixed(0));
-  params.set("casesIncreasingPercentage", 0);
+  if (row.extrapolated) {
+    params.set("casesIncreasingPercentage", 0.01);
+  } else {
+    params.delete("casesIncreasingPercentage");
+  }
   params.set("positiveCasePercentage", positivity.toFixed(2));
 
   return [urlBase, params].join("?");
