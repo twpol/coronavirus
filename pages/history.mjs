@@ -18,6 +18,8 @@ e.date.input.value = date;
 e.date.submit.addEventListener("click", () =>
   setQueryParam("date", e.date.input.value)
 );
+e.microCovid.input.value = params.get("microCovid");
+e.microCovid.input.addEventListener("change", updateMicroCovidLink);
 
 const area = getAreaFromQueryString();
 const data = await loadAreaData(area);
@@ -43,7 +45,15 @@ if (date) {
   }
   e.history.table.style.display = "";
 
-  e.microCovid.link.href = getMicroCovidLink(data, getIndexForDate(data, date));
+  updateMicroCovidLink();
+}
+
+function updateMicroCovidLink() {
+  e.microCovid.link.href = getMicroCovidLink(
+    data,
+    getIndexForDate(data, date),
+    e.microCovid.input.value
+  );
 }
 
 function addDataRow(index) {

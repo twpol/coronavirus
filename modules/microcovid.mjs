@@ -1,17 +1,21 @@
 import { getRowByIndexExtrapolate } from "./data.mjs";
 
-const MICRO_COVID_URL =
-  "https://www.microcovid.org/?useManualEntry=1&population=<population>&casesPastWeek=<cases-per-week>&casesIncreasingPercentage=<cases-increase-percent>&positiveCasePercentage=<test-positivity>";
+const DEFAULT_URL = "https://www.microcovid.org/?useManualEntry=1";
 
-export function getMicroCovidLink(data, index) {
+export function getMicroCovidLink(data, index, url) {
   const row = getRowByIndexExtrapolate(data, index);
 
   const population = data.population;
   const casesPerWeek = (row.cases * population) / 100000;
   const positivity = row.positivity;
 
-  return MICRO_COVID_URL.replace("<population>", population)
-    .replace("<cases-per-week>", casesPerWeek.toFixed(0))
-    .replace("<cases-increase-percent>", 0)
-    .replace("<test-positivity>", positivity.toFixed(2));
+  const [urlBase, query] = (url || DEFAULT_URL).split("?", 2);
+  const params = new URLSearchParams(query);
+
+  params.set("population", population);
+  params.set("casesPastWeek", casesPerWeek.toFixed(0));
+  params.set("casesIncreasingPercentage", 0);
+  params.set("positiveCasePercentage", positivity.toFixed(2));
+
+  return [urlBase, params].join("?");
 }
