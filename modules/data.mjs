@@ -191,14 +191,17 @@ export function getRowByIndex(data, index) {
 
 export function getRowByIndexExtrapolate(data, index) {
   const row = getRowByIndex(data, index);
-  if (!row.cases || !row.positivity) {
+  if (!row.cases) {
     const latestIndex = getDataClosestIndex(data, "");
     const diff = latestIndex - index;
     const row1 = getRowByIndex(data, latestIndex + 0);
     const row2 = getRowByIndex(data, latestIndex + 7);
     for (const prop of Object.keys(row)) {
       if (!row[prop] && typeof row1[prop] === "number") {
-        row[prop] = row1[prop] + ((row1[prop] - row2[prop]) * diff) / 7;
+        row[prop] = Math.max(
+          0,
+          row1[prop] + ((row1[prop] - row2[prop]) * diff) / 7
+        );
       }
     }
     row.date = getDateForIndex(data, index);
@@ -209,7 +212,7 @@ export function getRowByIndexExtrapolate(data, index) {
 
 export function getDataClosestIndex(data, date) {
   let index = Math.max(0, data.date.indexOf(date));
-  while (!data.cases[index] || !data.positivity[index]) {
+  while (!data.cases[index]) {
     index++;
   }
   return index;
