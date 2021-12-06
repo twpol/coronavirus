@@ -76,6 +76,8 @@ function autoOpenMicroCovid() {
   e.microCovid.auto.cancel.addEventListener("click", () => {
     clearInterval(timer);
     e.microCovid.auto.style.display = "none";
+    params.delete("openMicroCovid");
+    location.replace(`?${params}`);
   });
 }
 
