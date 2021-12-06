@@ -1,9 +1,9 @@
-import { getRowByIndexExtrapolate } from "./data.mjs";
+import { getRowByIndex } from "./data.mjs";
 
 const DEFAULT_URL = "https://www.microcovid.org/?useManualEntry=1";
 
 export function getMicroCovidLink(data, index, url) {
-  const row = getRowByIndexExtrapolate(data, index);
+  const row = getRowByIndex(data, index);
 
   const population = data.population;
   const casesPerWeek = (row.cases * population) / 100000;
@@ -14,7 +14,7 @@ export function getMicroCovidLink(data, index, url) {
 
   params.set("population", population);
   params.set("casesPastWeek", casesPerWeek.toFixed(0));
-  if (row.extrapolated) {
+  if (row.extrapolated.cases) {
     params.set("casesIncreasingPercentage", 0.01);
   } else {
     params.delete("casesIncreasingPercentage");

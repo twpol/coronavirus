@@ -4,7 +4,7 @@ import {
 } from "../modules/area.mjs";
 import {
   getIndexForDate,
-  getRowByIndexExtrapolate,
+  getRowByIndex,
   loadAreaData,
 } from "../modules/data.mjs";
 import { $, getElements, getPage, setText } from "../modules/elements.mjs";
@@ -80,12 +80,11 @@ function autoOpenMicroCovid() {
 }
 
 function addDataRow(index) {
-  const row0 = getRowByIndexExtrapolate(data, index);
-  const row1 = getRowByIndexExtrapolate(data, index + 7);
+  const row0 = getRowByIndex(data, index);
+  const row1 = getRowByIndex(data, index + 7);
   e.history.tbody.append(
     $(
       "tr",
-      { class: row0.extrapolated ? "fst-italic" : "" },
       $("td", row0.date),
       $("td", ...format("cases", row0, row1)),
       $("td", ...format("positivity", row0, row1)),
@@ -95,11 +94,12 @@ function addDataRow(index) {
       $("td", ...format("deaths", row0, row1))
     )
   );
-  return row0.extrapolated;
+  return Object.keys(row0.extrapolated).length;
 }
 
 function format(field, row0, row1) {
   return [
+    { class: row0.extrapolated[field] ? "fst-italic text-info" : "" },
     row0[field].toLocaleString(undefined, {
       minimumSignificantDigits: 3,
       maximumSignificantDigits: 3,

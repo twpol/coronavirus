@@ -19,8 +19,7 @@ e.nav.history.href = `${getPage("history")}?${getAreaQueryString(area)}`;
 
 setText("#population", data.population.toLocaleString());
 
-if (isNaN(data.tests[14])) {
-  data.tests = data.tests2;
+if (data.fields.tests === "uniquePeopleTestedBySpecimenDateRollingSum") {
   e.summary.tests.after("¹");
 } else {
   e.summary.tests.after("²");

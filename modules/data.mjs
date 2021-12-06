@@ -53,7 +53,7 @@ const OUTPUT_FIELDS = [
     type: rate,
   },
   {
-    name: "tests2",
+    name: "tests",
     field: "newVirusTestsByPublishDate",
     type: rollingRate,
   },
@@ -69,17 +69,26 @@ export async function loadAreaData(area) {
 
   const output = Object.create(null);
   output.date = [...data.date];
+  output.fields = Object.create(null);
 
   const exampleSum = data.newCasesBySpecimenDateRollingSum[ROLLING_DAYS];
   const exampleRate = data.newCasesBySpecimenDateRollingRate[ROLLING_DAYS];
   output.population = Math.round((100000 * exampleSum) / exampleRate);
 
   for (const field of OUTPUT_FIELDS) {
+    if (output[field.name] && output[field.name].length) {
+      continue;
+    }
     const values = [...data[field.field]];
     if (field.ignore > 0) {
       values.splice(0, field.ignore, ...NaNs(field.ignore));
     }
-    output[field.name] = (field.type || noop)(values, output.population);
+    if (values[2 * ROLLING_DAYS]) {
+      output[field.name] = (field.type || noop)(values, output.population);
+      output.fields[field.name] = field.field;
+    } else {
+      output[field.name] = [];
+    }
   }
 
   return output;
@@ -182,38 +191,28 @@ export function getDateForIndex(data, index) {
 }
 
 export function getRowByIndex(data, index) {
-  const output = Object.create(null);
-  for (const prop of Object.keys(data)) {
-    output[prop] = Array.isArray(data[prop]) ? data[prop][index] : data[prop];
-  }
-  return output;
-}
-
-export function getRowByIndexExtrapolate(data, index) {
-  const row = getRowByIndex(data, index);
-  if (!row.cases) {
-    const latestIndex = getDataClosestIndex(data, "");
-    const diff = latestIndex - index;
-    const row1 = getRowByIndex(data, latestIndex + 0);
-    const row2 = getRowByIndex(data, latestIndex + 7);
-    for (const prop of Object.keys(row)) {
-      if (!row[prop] && typeof row1[prop] === "number") {
-        row[prop] = Math.max(
-          0,
-          row1[prop] + ((row1[prop] - row2[prop]) * diff) / 7
-        );
-      }
+  const row = getRowObject(data, index);
+  row.extrapolated = Object.create(null);
+  for (const field of OUTPUT_FIELDS.map((field) => field.name)) {
+    if (field in data.fields && !row[field]) {
+      const extIndex = data[field].findIndex((value) => !!value);
+      row[field] = Math.max(
+        0,
+        data[field][extIndex] +
+          ((data[field][extIndex] - data[field][extIndex + 7]) *
+            (extIndex - index)) /
+            ROLLING_DAYS
+      );
+      row.extrapolated[field] = true;
     }
-    row.date = getDateForIndex(data, index);
-    row.extrapolated = true;
   }
   return row;
 }
 
-export function getDataClosestIndex(data, date) {
-  let index = Math.max(0, data.date.indexOf(date));
-  while (!data.cases[index]) {
-    index++;
+function getRowObject(data, index) {
+  const row = Object.create(null);
+  for (const prop of Object.keys(data)) {
+    row[prop] = Array.isArray(data[prop]) ? data[prop][index] : data[prop];
   }
-  return index;
+  return row;
 }
