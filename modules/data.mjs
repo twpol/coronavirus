@@ -19,43 +19,48 @@ const OUTPUT_FIELDS = [
     name: "cases",
     field: "newCasesBySpecimenDate",
     ignore: 5,
-    type: rollingRate,
+    type: fieldTypeDelta,
   },
   {
     name: "positivity",
     field: "uniqueCasePositivityBySpecimenDateRollingSum",
-    type: rolling,
+    type: fieldTypeRollingRate,
   },
   {
     name: "vaccinated",
     field: "cumPeopleVaccinatedCompleteByVaccinationDate",
-    type: rate,
+    type: fieldTypeAbsolute,
   },
   {
     name: "admissions",
     field: "newAdmissions",
-    type: rollingRate,
+    type: fieldTypeDelta,
   },
   {
     name: "patients",
     field: "hospitalCases",
-    type: rate,
+    type: fieldTypeAbsolute,
   },
   {
     name: "deaths",
     field: "newDeaths28DaysByDeathDate",
     ignore: 5,
-    type: rollingRate,
+    type: fieldTypeDelta,
   },
   {
     name: "tests",
     field: "uniquePeopleTestedBySpecimenDateRollingSum",
-    type: rate,
+    type: fieldTypeRollingSum,
   },
   {
     name: "tests",
     field: "newVirusTestsByPublishDate",
-    type: rollingRate,
+    type: fieldTypeDelta,
+  },
+  {
+    name: "estPositivity",
+    field: "newCasesBySpecimenDate",
+    type: fieldTypeEstimatedPositivity,
   },
 ];
 
@@ -84,7 +89,7 @@ export async function loadAreaData(area) {
       values.splice(0, field.ignore, ...NaNs(field.ignore));
     }
     if (values[2 * ROLLING_DAYS]) {
-      output[field.name] = (field.type || noop)(values, output.population);
+      output[field.name] = field.type(values, output);
       output.fields[field.name] = field.field;
     } else {
       output[field.name] = [];
@@ -135,16 +140,24 @@ function mergeData(...sources) {
   return output;
 }
 
-function noop(data) {
-  return [...data];
+function fieldTypeEstimatedPositivity(_data, output) {
+  return output.cases.map((cases, index) => 100 * cases / output.tests[index]);
 }
 
-function rate(data, population) {
-  return data.map((datum) => (datum * 100000) / population);
+function fieldTypeAbsolute(data, output) {
+  return rate(data, output.population);
 }
 
-function rollingRate(data, population) {
-  return rollingSum(rate(data, population));
+function fieldTypeDelta(data, output) {
+  return rate(rollingSum(data), output.population);
+}
+
+function fieldTypeRollingSum(data, output) {
+  return rate(data, output.population);
+}
+
+function fieldTypeRollingRate(data) {
+  return data;
 }
 
 function rollingSum(data) {
@@ -162,8 +175,8 @@ function rollingSum(data) {
   ];
 }
 
-function rolling(data) {
-  return scale(rollingSum(data), 1 / ROLLING_DAYS);
+function rate(data, population) {
+  return scale(data, 100000 / population);
 }
 
 function scale(data, scale) {

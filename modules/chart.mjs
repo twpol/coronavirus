@@ -63,6 +63,13 @@ export function plot(id, data, { flip } = {}) {
       "#summary-" + id + "-change",
       (flip ? -200 : 200) * (numbers[0] / numbers[ROLLING_DAYS] - 1)
     );
+  } else {
+    const estId = "est" + id[0].toUpperCase() + id.substr(1);
+    if (estId in data) {
+      const estGraph = chart(data, "date", estId);
+      graph.line.dash = "dash";
+      graph.y = estGraph.y;
+    }
   }
 
   if (document.getElementById("graph-" + id)) {
@@ -76,7 +83,7 @@ function chart(data, x, y, extra) {
   return Object.assign(
     {
       type: "scatter",
-      marker: {
+      line: {
         color: "rgba(68, 114, 196, 1)",
       },
       x: data[x].slice(0, RECENT_DAYS),
