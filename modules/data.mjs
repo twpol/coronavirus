@@ -206,6 +206,9 @@ export function getRowByIndex(data, index) {
       row.extrapolated[field] = true;
     }
   }
+  if (!row.date) {
+    row.date = getDateForIndex(data, index);
+  }
   return row;
 }
 
