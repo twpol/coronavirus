@@ -10,6 +10,6 @@ export async function fetchGenericApi(path, options) {
 
 export async function fetchDataApi(query, options) {
   return await (
-    await fetch(API_PROXY + encodeURIComponent(API_DATA + query), options)
+    await fetch(API_DATA + query, options)
   ).json();
 }
