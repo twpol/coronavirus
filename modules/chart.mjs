@@ -1,5 +1,3 @@
-import { setChangeBackground, setData, setText } from "./elements.mjs";
-
 const ROLLING_DAYS = 7;
 const RECENT_DAYS = 180;
 
@@ -16,54 +14,13 @@ const layout = {
   },
 };
 
-export function plot(id, data, { flip } = {}) {
+export function plot(id, data) {
   const graph = chart(data, "date", id);
   const numbers = graph.y
     .slice(0, ROLLING_DAYS * 3)
     .filter((num) => !isNaN(num));
 
-  if (numbers.length && numbers[0]) {
-    setText(
-      "#summary-" + id + "-sum > span",
-      ((numbers[0] * data.population) / 100000).toLocaleString(undefined, {
-        minimumSignificantDigits: 3,
-        maximumSignificantDigits: 3,
-      })
-    );
-    setText(
-      "#summary-" + id + "-rate > span",
-      numbers[0].toLocaleString(undefined, {
-        minimumSignificantDigits: 3,
-        maximumSignificantDigits: 3,
-      })
-    );
-    setText(
-      "#summary-" + id + "-change > span",
-      plusMinus(
-        (numbers[0] - numbers[ROLLING_DAYS]).toLocaleString(undefined, {
-          minimumSignificantDigits: 2,
-          maximumSignificantDigits: 2,
-        })
-      )
-    );
-    setData(
-      "#summary-" + id + "-change > span",
-      "percentChange",
-      plusMinus(
-        ((100 * numbers[0]) / numbers[ROLLING_DAYS] - 100).toLocaleString(
-          undefined,
-          {
-            minimumSignificantDigits: 2,
-            maximumSignificantDigits: 2,
-          }
-        )
-      )
-    );
-    setChangeBackground(
-      "#summary-" + id + "-change",
-      (flip ? -200 : 200) * (numbers[0] / numbers[ROLLING_DAYS] - 1)
-    );
-  } else {
+  if (!numbers.length || !numbers[0]) {
     const estId = "est" + id[0].toUpperCase() + id.substr(1);
     if (estId in data) {
       const estGraph = chart(data, "date", estId);

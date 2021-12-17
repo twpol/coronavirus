@@ -3,3 +3,11 @@ h2 {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+body:not(.option-summary-individual) #summary-tbody > tr.individual {
+  display: none;
+}
+
+body.option-summary-individual #summary-tbody > tr.grouped {
+  display: none;
+}

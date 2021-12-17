@@ -10,6 +10,7 @@ import {
 import { $, getElements, getPage, setText } from "../modules/elements.mjs";
 import { params, setQueryParam } from "../modules/location.mjs";
 import { getMicroCovidLink } from "../modules/microcovid.mjs";
+import { tableRow } from "../modules/table.mjs";
 
 const e = getElements();
 
@@ -84,36 +85,6 @@ function autoOpenMicroCovid() {
 function addDataRow(index) {
   const row0 = getRowByIndex(data, index);
   const row1 = getRowByIndex(data, index + 7);
-  e.history.tbody.append(
-    $(
-      "tr",
-      $("td", row0.date),
-      $("td", ...format("cases", row0, row1)),
-      $("td", ...format("positivity", row0, row1)),
-      $("td", ...format("vaccinated", row0, row1)),
-      $("td", ...format("admissions", row0, row1)),
-      $("td", ...format("patients", row0, row1)),
-      $("td", ...format("deaths", row0, row1))
-    )
-  );
+  e.history.tbody.append(tableRow(row0, row1));
   return Object.keys(row0.extrapolated).length;
-}
-
-function format(field, row0, row1) {
-  return [
-    { class: row0.extrapolated[field] ? "fst-italic text-info" : "" },
-    row0[field].toLocaleString(undefined, {
-      minimumSignificantDigits: 3,
-      maximumSignificantDigits: 3,
-    }),
-    " (",
-    (row0[field] - row1[field])
-      .toLocaleString(undefined, {
-        minimumSignificantDigits: 2,
-        maximumSignificantDigits: 2,
-        signDisplay: "always",
-      })
-      .substr(0, 7),
-    ")",
-  ];
 }

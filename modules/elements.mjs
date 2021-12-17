@@ -48,21 +48,20 @@ export function setStyleProp(selector, name, value) {
   }
 }
 
-export function setChangeBackground(selector, change) {
+export function getChangeBackground(change) {
   if (change > 0) {
-    setStyleProp(
-      selector,
-      "background-color",
-      "rgba(100%, 0%, 0%, " + Math.min(100, change) + "%)"
+    return (
+      "color: black; background-color: rgba(100%, 0%, 0%, " +
+      Math.min(100, change) +
+      "%)"
     );
   } else {
-    setStyleProp(
-      selector,
-      "background-color",
-      "rgba(0%, 100%, 0%, " + Math.min(100, -change) + "%)"
+    return (
+      "color: black; background-color: rgba(0%, 100%, 0%, " +
+      Math.min(100, -change) +
+      "%)"
     );
   }
-  setStyleProp(selector, "color", "black");
 }
 
 export function getPage(name) {
@@ -83,3 +82,21 @@ export function $(name, ...children) {
   element.append(...children);
   return element;
 }
+
+function persistOptions() {
+  const options = document.querySelectorAll("input[type=checkbox][id]");
+  for (const option of options) {
+    option.checked = localStorage[option.id] === "true";
+    document.body.classList.toggle("option-" + option.id, option.checked);
+
+    option.addEventListener("change", function (event) {
+      localStorage[event.target.id] = String(event.target.checked);
+      document.body.classList.toggle(
+        "option-" + event.target.id,
+        event.target.checked
+      );
+    });
+  }
+}
+
+setTimeout(persistOptions);
