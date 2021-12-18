@@ -7,7 +7,7 @@ export function getMicroCovidLink(data, index, url) {
 
   const population = data.population;
   const casesPerWeek = (row.cases * population) / 100000;
-  const positivity = row.positivity;
+  const positivity = row.positivity || row.estPositivity;
 
   const [urlBase, query] = (url || DEFAULT_URL).split("?", 2);
   const params = new URLSearchParams(query);

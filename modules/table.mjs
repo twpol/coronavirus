@@ -16,13 +16,22 @@ export function tableRow(row0, row1, options = {}) {
 }
 
 function format(field, row0, row1, options) {
+  const estField = "est" + field[0].toUpperCase() + field.substr(1);
+  if (!row0[field] && row0[estField]) {
+    field = estField;
+  }
+  const estimated = row0.extrapolated[field] || field === estField;
+
   const flip = field === "vaccinated" || field === "tests";
   const change = (flip ? -200 : 200) * (row0[field] / row1[field] - 1);
+
   return options.extrapolated === !row0.extrapolated[field]
     ? []
+    : !row0[field]
+    ? [{ class: "fst-italic" }, "n/a"]
     : [
         {
-          class: row0.extrapolated[field] ? "fst-italic text-info" : "",
+          class: estimated ? "fst-italic text-info" : "",
           style: getChangeBackground(change),
         },
         row0[field].toLocaleString(undefined, {
