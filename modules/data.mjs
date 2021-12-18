@@ -64,7 +64,7 @@ const OUTPUT_FIELDS = [
   },
 ];
 
-const ROLLING_DAYS = 7;
+export const ROLLING_DAYS = 7;
 
 export async function loadAreaData(area) {
   const data = mergeData(
@@ -141,7 +141,9 @@ function mergeData(...sources) {
 }
 
 function fieldTypeEstimatedPositivity(_data, output) {
-  return output.cases.map((cases, index) => 100 * cases / output.tests[index]);
+  return output.cases.map(
+    (cases, index) => (100 * cases) / output.tests[index]
+  );
 }
 
 function fieldTypeAbsolute(data, output) {
@@ -212,7 +214,7 @@ export function getRowByIndex(data, index) {
       row[field] = Math.max(
         0,
         data[field][extIndex] +
-          ((data[field][extIndex] - data[field][extIndex + 7]) *
+          ((data[field][extIndex] - data[field][extIndex + ROLLING_DAYS]) *
             (extIndex - index)) /
             ROLLING_DAYS
       );

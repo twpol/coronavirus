@@ -1,4 +1,5 @@
-const ROLLING_DAYS = 7;
+import { ROLLING_DAYS } from "./data.mjs";
+
 const RECENT_DAYS = 180;
 
 const layout = {

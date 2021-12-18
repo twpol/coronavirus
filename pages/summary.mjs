@@ -3,7 +3,7 @@ import {
   getAreaQueryString,
 } from "../modules/area.mjs";
 import { plot } from "../modules/chart.mjs";
-import { getRowByIndex, loadAreaData } from "../modules/data.mjs";
+import { getRowByIndex, loadAreaData, ROLLING_DAYS } from "../modules/data.mjs";
 import { getElements, getPage, setText } from "../modules/elements.mjs";
 import { tableRow } from "../modules/table.mjs";
 
@@ -31,9 +31,9 @@ const latestRow0 = Object.create(null);
 const latestRow1 = Object.create(null);
 latestRow0.date = "Most recent";
 latestRow0.extrapolated = Object.create(null);
-for (let index = 0; index <= latestIndex; index++) {
+for (let index = 0; index <= latestIndex + ROLLING_DAYS; index++) {
   const row0 = getRowByIndex(data, index);
-  const row1 = getRowByIndex(data, index + 7);
+  const row1 = getRowByIndex(data, index + ROLLING_DAYS);
   e.summary.tbody.append(
     tableRow(row0, row1, { class: "individual", extrapolated: false })
   );

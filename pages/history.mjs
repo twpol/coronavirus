@@ -6,8 +6,9 @@ import {
   getIndexForDate,
   getRowByIndex,
   loadAreaData,
+  ROLLING_DAYS,
 } from "../modules/data.mjs";
-import { $, getElements, getPage, setText } from "../modules/elements.mjs";
+import { getElements, getPage, setText } from "../modules/elements.mjs";
 import { params, setQueryParam } from "../modules/location.mjs";
 import { getMicroCovidLink } from "../modules/microcovid.mjs";
 import { tableRow } from "../modules/table.mjs";
@@ -42,7 +43,7 @@ setText("#population", data.population.toLocaleString());
 if (date) {
   let index = getIndexForDate(data, date);
   while (addDataRow(index)) {
-    index += 7;
+    index += ROLLING_DAYS;
   }
   e.history.table.style.display = "";
 
@@ -84,7 +85,7 @@ function autoOpenMicroCovid() {
 
 function addDataRow(index) {
   const row0 = getRowByIndex(data, index);
-  const row1 = getRowByIndex(data, index + 7);
+  const row1 = getRowByIndex(data, index + ROLLING_DAYS);
   e.history.tbody.append(tableRow(row0, row1));
   return Object.keys(row0.extrapolated).length;
 }
