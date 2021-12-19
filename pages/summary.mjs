@@ -35,7 +35,7 @@ for (let index = 0; index <= latestIndex + ROLLING_DAYS; index++) {
   const row0 = getRowByIndex(data, index);
   const row1 = getRowByIndex(data, index + ROLLING_DAYS);
   e.summary.tbody.append(
-    tableRow(row0, row1, { class: "individual", extrapolated: false })
+    tableRow(row0, row1, { class: "expanded", extrapolated: false })
   );
   for (const field of Object.keys(row0.fields)) {
     if (!(field in latestRow0) && !(field in row0.extrapolated)) {
@@ -44,7 +44,7 @@ for (let index = 0; index <= latestIndex + ROLLING_DAYS; index++) {
     }
   }
 }
-e.summary.tbody.append(tableRow(latestRow0, latestRow1, { class: "grouped" }));
+e.summary.tbody.append(tableRow(latestRow0, latestRow1, { class: "collapsed" }));
 
 plot("cases", data);
 plot("positivity", data);

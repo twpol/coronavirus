@@ -1,3 +1,5 @@
+import { params, replaceQueryParam } from "./location.mjs";
+
 export function getElements() {
   const e = Object.create(null);
   for (const element of document.querySelectorAll("[id]")) {
@@ -86,11 +88,11 @@ export function $(name, ...children) {
 function persistOptions() {
   const options = document.querySelectorAll("input[type=checkbox][id]");
   for (const option of options) {
-    option.checked = localStorage[option.id] === "true";
+    option.checked = !!params.get(option.id);
     document.body.classList.toggle("option-" + option.id, option.checked);
 
     option.addEventListener("change", function (event) {
-      localStorage[event.target.id] = String(event.target.checked);
+      replaceQueryParam(event.target.id, event.target.checked ? "1" : "");
       document.body.classList.toggle(
         "option-" + event.target.id,
         event.target.checked

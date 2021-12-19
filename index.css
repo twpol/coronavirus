@@ -4,10 +4,10 @@ h2 {
   text-overflow: ellipsis;
 }
 
-body:not(.option-summary-individual) #summary-tbody > tr.individual {
+body:not(.option-expanded) #summary-tbody > tr.expanded {
   display: none;
 }
 
-body.option-summary-individual #summary-tbody > tr.grouped {
+body.option-expanded #summary-tbody > tr.collapsed {
   display: none;
 }

@@ -5,3 +5,13 @@ export function setQueryParam(name, value) {
   newParams.set(name, value);
   location.search = `?${newParams}`;
 }
+
+export function replaceQueryParam(name, value) {
+  const newParams = new URLSearchParams(params);
+  if (value) {
+    newParams.set(name, value);
+  } else {
+    newParams.delete(name);
+  }
+  history.replaceState(null, '', `?${newParams}`);
+}
