@@ -1,4 +1,5 @@
 import { fetchGenericApi } from "./api.mjs";
+import { params } from "./location.mjs";
 
 const AREA_TYPES_PRIMARY = ["ltla", "utla", "region", "nation", "overview"];
 const AREA_TYPES_HEALTHCARE = ["nhsTrust", "nhsRegion", "nation", "overview"];
@@ -44,25 +45,21 @@ export function getAreaQueryString(area) {
 }
 
 export function getAreaFromQueryString() {
-  const params = location.search.substring(1).split("&");
-  const primary = (
-    params.find(
-      (p) =>
-        p.startsWith("overview=") ||
-        p.startsWith("nation=") ||
-        p.startsWith("region=") ||
-        p.startsWith("utla=") ||
-        p.startsWith("ltla=")
-    ) || "="
-  ).split("=");
-  const healthcare = (
-    params.find(
-      (p) =>
-        p.startsWith("nation=") ||
-        p.startsWith("nhsRegion=") ||
-        p.startsWith("nhsTrust=")
-    ) || primary.join("=").replace("region=", "nhsRegion=")
-  ).split("=");
+  const paramList = [...params];
+  const primary = paramList.find(
+    ([key]) =>
+      key === "overview" ||
+      key === "nation" ||
+      key === "region" ||
+      key === "utla" ||
+      key === "ltla"
+  ) || ["", ""];
+  const healthcare = paramList.find(
+    ([key]) => key === "nation" || key === "nhsRegion" || key === "nhsTrust"
+  ) || [...primary];
+  if (healthcare[0] === "region") {
+    healthcare[0] = "nhsRegion";
+  }
   return {
     primary: [decodeURIComponent(primary[1]), primary[0]],
     healthcare: [decodeURIComponent(healthcare[1]), healthcare[0]],
