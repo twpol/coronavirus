@@ -147,34 +147,34 @@ function fieldTypeEstimatedPositivity(_data, output) {
 }
 
 function fieldTypeAbsolute(data, output) {
-  return rate(data, output.population);
+  return shift(rate(data, output.population));
 }
 
 function fieldTypeDelta(data, output) {
-  return rate(rollingSum(data), output.population);
+  return shift(rate(rollingSum(data), output.population));
 }
 
 function fieldTypeRollingSum(data, output) {
-  return rate(data, output.population);
+  return shift(rate(data, output.population));
 }
 
 function fieldTypeRollingRate(data) {
-  return data;
+  return shift(data);
 }
 
 function rollingSum(data) {
+  return data.slice(ROLLING_DAYS).map((_, index) => {
+    return data
+      .slice(index, index + ROLLING_DAYS)
+      .reduce(function (sum, value) {
+        return sum + value;
+      }, 0);
+  });
+}
+
+function shift(data) {
   const half = (ROLLING_DAYS - 1) / 2;
-  return [
-    ...NaNs(half),
-    ...data.slice(ROLLING_DAYS).map((_, index) => {
-      return data
-        .slice(index, index + ROLLING_DAYS)
-        .reduce(function (sum, value) {
-          return sum + value;
-        }, 0);
-    }),
-    ...NaNs(half),
-  ];
+  return [...NaNs(half), ...data];
 }
 
 function rate(data, population) {
