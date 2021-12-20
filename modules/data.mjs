@@ -124,20 +124,19 @@ async function loadData(code, fields) {
 }
 
 function mergeData(...sources) {
-  const date = sources.map((source) => source.date[0]).sort()[0];
-  const maxOffset = sources
-    .map((source) => source.date.indexOf(date))
-    .sort()
-    .reverse()[0];
   const output = Object.create(null);
   for (const source of sources) {
-    const offset = source.date.indexOf(date);
+    const offset = -getIndexForDate(source, getISODate(new Date()));
     for (const prop of Object.keys(source)) {
       if (!(prop in output)) {
-        output[prop] = [...NaNs(maxOffset - offset), ...source[prop]];
+        output[prop] = [...NaNs(offset), ...source[prop]];
+        if (prop === "date" && offset > 0) {
+          for (let i = 0; i < offset; i++) {
+            output[prop][i] = getDateForIndex(source, i - offset);
+          }
+        }
       }
     }
-    output.date.splice(maxOffset - offset, source.date.length, ...source.date);
   }
   return output;
 }
@@ -204,6 +203,10 @@ export function getDateForIndex(data, index) {
   const date = new Date(
     Date.parse(data.date[0] + MIDNIGHT_UTC) - DAY_MS * index
   );
+  return getISODate(date);
+}
+
+function getISODate(date) {
   return date.toISOString().substring(0, 10);
 }
 
