@@ -18,7 +18,7 @@ const OUTPUT_FIELDS = [
   {
     name: "cases",
     field: "newCasesBySpecimenDate",
-    ignore: 4 /* matches what https://coronavirus.data.gov.uk/ graphs do, even though text says 5 days */,
+    ignore: 4,
     type: fieldTypeDelta,
   },
   {
@@ -29,6 +29,7 @@ const OUTPUT_FIELDS = [
   {
     name: "vaccinated",
     field: "cumPeopleVaccinatedCompleteByVaccinationDate",
+    ignore: 2,
     type: fieldTypeAbsolute,
   },
   {
@@ -44,7 +45,7 @@ const OUTPUT_FIELDS = [
   {
     name: "deaths",
     field: "newDeaths28DaysByDeathDate",
-    ignore: 5,
+    ignore: 4,
     type: fieldTypeDelta,
   },
   {
@@ -86,7 +87,8 @@ export async function loadAreaData(area) {
     }
     const values = [...data[field.field]];
     if (field.ignore > 0) {
-      values.splice(0, field.ignore, ...NaNs(field.ignore));
+      const skip = field.ignore + values.findIndex((item) => !isNaN(item));
+      values.splice(0, skip, ...NaNs(skip));
     }
     if (values[2 * ROLLING_DAYS]) {
       output[field.name] = field.type(values, output);
