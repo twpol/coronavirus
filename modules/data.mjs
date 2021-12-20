@@ -18,7 +18,7 @@ const OUTPUT_FIELDS = [
   {
     name: "cases",
     field: "newCasesBySpecimenDate",
-    ignore: 5,
+    ignore: 4 /* matches what https://coronavirus.data.gov.uk/ graphs do, even though text says 5 days */,
     type: fieldTypeDelta,
   },
   {
