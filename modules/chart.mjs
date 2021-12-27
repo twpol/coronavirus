@@ -1,6 +1,4 @@
-import { ROLLING_DAYS } from "./data.mjs";
-
-const RECENT_DAYS = 180;
+import { RECENT_DAY, RECENT_DAYS } from "./data.mjs";
 
 const layout = {
   margin: {
@@ -17,11 +15,9 @@ const layout = {
 
 export function plot(id, data) {
   const graph = chart(data, "date", id);
-  const numbers = graph.y
-    .slice(0, ROLLING_DAYS * 3)
-    .filter((num) => !isNaN(num));
+  const hasData = !isNaN(graph.y[RECENT_DAY]);
 
-  if (!numbers.length || !numbers[0]) {
+  if (!hasData) {
     const estId = "est" + id[0].toUpperCase() + id.substr(1);
     if (estId in data) {
       const estGraph = chart(data, "date", estId);
@@ -49,9 +45,4 @@ function chart(data, x, y, extra) {
     },
     extra
   );
-}
-
-function plusMinus(number) {
-  const text = String(number);
-  return number >= 0 ? "+" + text : text;
 }

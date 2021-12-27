@@ -67,6 +67,10 @@ const OUTPUT_FIELDS = [
 
 export const ROLLING_DAYS = 7;
 
+export const RECENT_DAY = 4 * ROLLING_DAYS;
+
+export const RECENT_DAYS = 26 * ROLLING_DAYS;
+
 export async function loadAreaData(area) {
   const data = mergeData(
     await loadData(area.primary, INPUT_FIELDS.primary),
@@ -77,8 +81,8 @@ export async function loadAreaData(area) {
   output.date = [...data.date];
   output.fields = Object.create(null);
 
-  const exampleSum = data.newCasesBySpecimenDateRollingSum[ROLLING_DAYS];
-  const exampleRate = data.newCasesBySpecimenDateRollingRate[ROLLING_DAYS];
+  const exampleSum = data.newCasesBySpecimenDateRollingSum[RECENT_DAY];
+  const exampleRate = data.newCasesBySpecimenDateRollingRate[RECENT_DAY];
   output.population = Math.round((100000 * exampleSum) / exampleRate);
 
   for (const field of OUTPUT_FIELDS) {
@@ -90,7 +94,7 @@ export async function loadAreaData(area) {
       const skip = field.ignore + values.findIndex((item) => !isNaN(item));
       values.splice(0, skip, ...NaNs(skip));
     }
-    if (values[2 * ROLLING_DAYS]) {
+    if (values[RECENT_DAY]) {
       output[field.name] = field.type(values, output);
       output.fields[field.name] = field.field;
     } else {
