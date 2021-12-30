@@ -22,8 +22,8 @@ function format(field, row0, row1, options) {
   }
   const estimated = row0.extrapolated[field] || field === estField;
 
-  const flip = field === "vaccinated" || field === "tests";
-  const change = (flip ? -200 : 200) * (row0[field] / row1[field] - 1);
+  const flip = field === "vaccinated" || field === "tests" ? -1 : 1;
+  const change = flip * getChange(row0[field], row1[field]);
 
   return options.extrapolated === !row0.extrapolated[field]
     ? []
@@ -48,4 +48,8 @@ function format(field, row0, row1, options) {
           .substring(0, 7),
         ")",
       ];
+}
+
+function getChange(row0, row1) {
+  return (200 * (row0 - row1)) / Math.min(row0, row1);
 }
