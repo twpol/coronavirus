@@ -33,7 +33,6 @@
         <button id=microCovid-auto-cancel class="btn btn-danger">Cancel</button>
     </div>
 
-    <h2>History</h2>
     <div class="row mb-3">
         <div class="col-md-6">
             <div class="mb-3">
@@ -51,7 +50,6 @@
         </div>
     </div>
 
-    <h2>Data</h2>
     <p>
         Centred, rolling, 7 day totals (with 7 day change) |
         Some data ignored due to reporting delays |
@@ -60,6 +58,15 @@
         Data up to <span id="data-date">[loading]</span> |
         Estimated population: <span id="population"><em>no data</em></span>
     </p>
+
+    <p>
+        <span class="fst-italic text-info">
+            Cells in this style have been estimated from the nearest available data
+        </span> |
+        ¹ Unique people tested |
+        ² Total tests performed
+    </p>
+
     <table id=history-table class="table" style="display: none;">
         <thead>
             <tr>
@@ -70,15 +77,12 @@
                 <th scole="col">Admissions<br>/ 100k</th>
                 <th scole="col">Patients<br>/ 100k</th>
                 <th scole="col">Deaths<br>/ 100k</th>
-                <th scole="col">Tests<br>/ 100k</th>
+                <th scole="col"><span id="summary-tests">Tests</span><br>/ 100k</th>
             </tr>
         </thead>
         <tbody id=history-tbody>
         </tbody>
     </table>
-    <p class="fst-italic text-info">
-        Cells in this style have been estimated from the nearest available data
-    </p>
 
     <footer class="py-3 text-muted">
         <hr>
