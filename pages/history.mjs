@@ -23,6 +23,14 @@ e.date.submit.addEventListener("click", () =>
 e.microCovid.input.value = params.get("microCovid");
 e.microCovid.input.addEventListener("change", updateMicroCovidLink);
 
+setText("#population", data.population.toLocaleString());
+
+if (data.fields.tests === "uniquePeopleTestedBySpecimenDateRollingSum") {
+  e.history.tests.after("¹");
+} else {
+  e.history.tests.after("²");
+}
+
 const area = getAreaFromQueryString();
 const data = await loadAreaData(area);
 
