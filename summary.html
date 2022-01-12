@@ -28,7 +28,6 @@
         </div>
     </nav>
 
-    <h2>Summary</h2>
     <p>
         Centred, rolling, 7 day totals (with 7 day change) |
         Some data ignored due to reporting delays |
@@ -37,11 +36,16 @@
         Data up to <span id="data-date">[loading]</span> |
         Estimated population: <span id="population"><em>no data</em></span>
     </p>
+
     <p>
         <label><input type=checkbox id=expanded> Show more statistics</label> |
+        <span class="fst-italic text-info">
+            Cells in this style have been estimated from the nearest available data
+        </span> |
         ¹ Unique people tested |
         ² Total tests performed
     </p>
+
     <table class="table">
         <thead>
             <tr>
@@ -58,11 +62,7 @@
         <tbody id=summary-tbody>
         </tbody>
     </table>
-    <p class="fst-italic text-info">
-        Cells in this style have been estimated from the nearest available data
-    </p>
 
-    <h2>Graphs</h2>
     <div class="row">
         <div class="col-4">
             <h3>Cases / 100k</h3>
