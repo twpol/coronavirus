@@ -27,15 +27,22 @@ export function plot(id, data) {
   }
 
   if (document.getElementById("graph-" + id)) {
-    Plotly.newPlot("graph-" + id, [graph], {
-      ...layout,
-      xaxis: {
-        range: [
-          getDateObjectForIndex(data, RECENT_DAYS),
-          getDateObjectForIndex(data, 0),
-        ],
+    Plotly.newPlot(
+      "graph-" + id,
+      [graph],
+      {
+        ...layout,
+        xaxis: {
+          range: [
+            getDateObjectForIndex(data, RECENT_DAYS),
+            getDateObjectForIndex(data, 0),
+          ],
+        },
       },
-    });
+      {
+        responsive: true,
+      }
+    );
   }
 }
 
