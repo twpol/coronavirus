@@ -85,6 +85,7 @@ export async function loadAreaData(area) {
   const exampleRate = data.newCasesBySpecimenDateRollingRate[RECENT_DAY];
   output.population = Math.round((100000 * exampleSum) / exampleRate);
 
+  let latestIndex = RECENT_DAYS;
   for (const field of OUTPUT_FIELDS) {
     if (output[field.name] && output[field.name].length) {
       continue;
@@ -97,10 +98,15 @@ export async function loadAreaData(area) {
     if (values[RECENT_DAY]) {
       output[field.name] = field.type(values, output);
       output.fields[field.name] = field.field;
+      latestIndex = Math.min(
+        latestIndex,
+        output[field.name].findIndex((value) => !isNaN(value))
+      );
     } else {
       output[field.name] = [];
     }
   }
+  output.latestDate = output.date[latestIndex];
 
   return output;
 }
