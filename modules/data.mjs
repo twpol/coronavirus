@@ -209,11 +209,12 @@ export function getIndexForDate(data, date) {
   return (date0 - date1) / DAY_MS;
 }
 
+export function getDateObjectForIndex(data, index) {
+  return new Date(Date.parse(data.date[0] + MIDNIGHT_UTC) - DAY_MS * index);
+}
+
 export function getDateForIndex(data, index) {
-  const date = new Date(
-    Date.parse(data.date[0] + MIDNIGHT_UTC) - DAY_MS * index
-  );
-  return getISODate(date);
+  return getISODate(getDateObjectForIndex(data, index));
 }
 
 function getISODate(date) {

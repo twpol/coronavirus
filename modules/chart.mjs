@@ -1,4 +1,4 @@
-import { RECENT_DAY, RECENT_DAYS } from "./data.mjs";
+import { getDateObjectForIndex, RECENT_DAY, RECENT_DAYS } from "./data.mjs";
 
 const layout = {
   margin: {
@@ -27,7 +27,15 @@ export function plot(id, data) {
   }
 
   if (document.getElementById("graph-" + id)) {
-    Plotly.newPlot("graph-" + id, [graph], layout);
+    Plotly.newPlot("graph-" + id, [graph], {
+      ...layout,
+      xaxis: {
+        range: [
+          getDateObjectForIndex(data, RECENT_DAYS),
+          getDateObjectForIndex(data, 0),
+        ],
+      },
+    });
   }
 }
 
@@ -40,8 +48,8 @@ function chart(data, x, y, extra) {
       line: {
         color: "rgba(68, 114, 196, 1)",
       },
-      x: data[x].slice(0, RECENT_DAYS),
-      y: data[y].slice(0, RECENT_DAYS),
+      x: data[x],
+      y: data[y],
     },
     extra
   );
