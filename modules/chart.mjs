@@ -8,9 +8,6 @@ const layout = {
     b: 40,
   },
   showlegend: false,
-  yaxis: {
-    rangemode: "tozero",
-  },
 };
 
 export function plot(id, data) {
@@ -37,6 +34,17 @@ export function plot(id, data) {
             getDateObjectForIndex(data, RECENT_DAYS),
             getDateObjectForIndex(data, 0),
           ],
+          autorange: false,
+        },
+        yaxis: {
+          range: [
+            0,
+            data[id]
+              .slice(0, RECENT_DAYS)
+              .filter((v) => !isNaN(v))
+              .reduce((a, b) => Math.max(a, b), 0),
+          ],
+          autorange: false,
         },
       },
       {
