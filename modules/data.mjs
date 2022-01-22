@@ -230,7 +230,10 @@ export function getRowByIndex(data, index) {
       row[field] = Math.max(
         0,
         data[field][extIndex] +
-          ((data[field][extIndex] - data[field][extIndex + ROLLING_DAYS]) *
+          (Math.max(
+            0,
+            data[field][extIndex] - data[field][extIndex + ROLLING_DAYS]
+          ) *
             (extIndex - index)) /
             ROLLING_DAYS
       );
