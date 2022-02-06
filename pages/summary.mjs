@@ -54,8 +54,8 @@ e.summary.tbody.append(
 
 plot("cases", data);
 plot("positivity", data);
-plot("vaccinated", data);
+plot("tests", data);
 plot("admissions", data);
 plot("patients", data);
 plot("deaths", data);
-plot("tests", data);
+plot("vaccinated", data);

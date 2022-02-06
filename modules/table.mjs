@@ -7,11 +7,11 @@ export function tableRow(row0, row1, options = {}) {
     $("td", row0.date),
     $("td", ...format("cases", row0, row1, options)),
     $("td", ...format("positivity", row0, row1, options)),
-    $("td", ...format("vaccinated", row0, row1, options)),
+    $("td", ...format("tests", row0, row1, options)),
     $("td", ...format("admissions", row0, row1, options)),
     $("td", ...format("patients", row0, row1, options)),
     $("td", ...format("deaths", row0, row1, options)),
-    $("td", ...format("tests", row0, row1, options))
+    $("td", ...format("vaccinated", row0, row1, options))
   );
 }
 
