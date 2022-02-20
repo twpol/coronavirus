@@ -11,7 +11,12 @@ const INPUT_FIELDS = {
     "uniquePeopleTestedBySpecimenDateRollingSum",
     "newVirusTestsByPublishDate",
   ],
-  healthcare: ["newAdmissions", "hospitalCases"],
+  healthcare: [
+    "newAdmissions",
+    "newAdmissionsRollingSum",
+    "newAdmissionsRollingRate",
+    "hospitalCases",
+  ],
 };
 
 const OUTPUT_FIELDS = [
@@ -35,12 +40,12 @@ const OUTPUT_FIELDS = [
   {
     name: "admissions",
     field: "newAdmissions",
-    type: fieldTypeDelta,
+    type: fieldTypeHealthcareDelta,
   },
   {
     name: "patients",
     field: "hospitalCases",
-    type: fieldTypeAbsolute,
+    type: fieldTypeHealthcareAbsolute,
   },
   {
     name: "deaths",
@@ -81,9 +86,8 @@ export async function loadAreaData(area) {
   output.date = [...data.date];
   output.fields = Object.create(null);
 
-  const exampleSum = data.newCasesBySpecimenDateRollingSum[RECENT_DAY];
-  const exampleRate = data.newCasesBySpecimenDateRollingRate[RECENT_DAY];
-  output.population = Math.round((100000 * exampleSum) / exampleRate);
+  output.population = getPopulation(data, "newCasesBySpecimenDate");
+  output.healthcarePopulation = getPopulation(data, "newAdmissions");
 
   let latestIndex = RECENT_DAYS;
   for (const field of OUTPUT_FIELDS) {
@@ -109,6 +113,12 @@ export async function loadAreaData(area) {
   output.latestDate = output.date[latestIndex];
 
   return output;
+}
+
+function getPopulation(data, key) {
+  const exampleSum = data[`${key}RollingSum`][RECENT_DAY];
+  const exampleRate = data[`${key}RollingRate`][RECENT_DAY];
+  return Math.round((100000 * exampleSum) / exampleRate);
 }
 
 async function loadData(code, fields) {
@@ -171,6 +181,14 @@ function fieldTypeRollingSum(data, output) {
 
 function fieldTypeRollingRate(data) {
   return shift(data);
+}
+
+function fieldTypeHealthcareAbsolute(data, output) {
+  return shift(rate(data, output.healthcarePopulation));
+}
+
+function fieldTypeHealthcareDelta(data, output) {
+  return shift(rate(rollingSum(data), output.healthcarePopulation));
 }
 
 function rollingSum(data) {
