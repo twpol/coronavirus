@@ -7,11 +7,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link href="index.css" rel="stylesheet">
-    <title>Coronavirus history</title>
+    <title>Coronavirus comparison</title>
 </head>
 
 <body class="container-fluid">
-    <h1>Coronavirus history</h1>
+    <h1>Coronavirus comparison</h1>
     <nav class="navbar navbar-expand navbar-light bg-light mb-3">
         <div class="container-fluid">
             <ul class="navbar-nav">
@@ -19,47 +19,21 @@
                     <a class="nav-link" href="./">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="nav-summary">Summary</a>
+                    <a class="nav-link disabled">Summary</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page">History</a>
+                    <a class="nav-link disabled">History</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="nav-comparison">Comparison</a>
+                    <a class="nav-link active" aria-current="page">Comparison</a>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <div id=microCovid-auto class="alert alert-primary" role="alert" style="display: none;">
-        <h2>Automatically opening microCOVID website in <span id=microCovid-auto-countdown></span> seconds...</h2>
-        <button id=microCovid-auto-cancel class="btn btn-danger">Cancel</button>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label for=date-input class="form-label">Choose a date (required):</label>
-                <input id=date-input class="form-control" type="date">
-            </div>
-            <button id=date-submit class="btn btn-primary">Set date</button>
-        </div>
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label for=microCovid-input class="form-label">Enter a microCOVID link (optional):</label>
-                <input id=microCovid-input class="form-control">
-            </div>
-            <a id=microCovid-link class="btn btn-primary">Open microCOVID</a>
-        </div>
-    </div>
-
     <p>
         Centred, rolling, 7 day totals (with 7 day change) |
-        Some data ignored due to reporting delays |
-        Primary data for <span id="area-primary">[loading]</span> |
-        Healthcare data for <span id="area-healthcare">[loading]</span> |
-        Data up to <span id="data-date">[loading]</span> |
-        Estimated population: <span id="population"><em>no data</em></span>
+        Some data ignored due to reporting delays
     </p>
 
     <p>
@@ -70,22 +44,53 @@
         ² Total tests performed
     </p>
 
-    <table id=history-table class="table" style="display: none;">
+    <table class="table">
         <thead>
             <tr>
-                <th scole="col">Date</th>
+                <th scole="col">Area</th>
                 <th scole="col">Cases<br>/ 100k</th>
                 <th scole="col">Positivity<br>%</th>
-                <th scole="col"><span id="history-tests">Tests</span><br>/ 100k</th>
+                <th scole="col"><span id="summary-tests">Tests</span><br>/ 100k</th>
                 <th scole="col">Admissions<br>/ 100k</th>
                 <th scole="col">Patients<br>/ 100k</th>
                 <th scole="col">Deaths<br>/ 100k</th>
                 <th scole="col">Vaccinated<br>/ 100k</th>
             </tr>
         </thead>
-        <tbody id=history-tbody>
+        <tbody id=summary-tbody>
         </tbody>
     </table>
+
+    <div class="row">
+        <div class="col-xl-4 col-lg-6">
+            <h2>Cases / 100k</h2>
+            <div id="graph-cases"></div>
+        </div>
+        <div class="col-xl-4 col-lg-6">
+            <h2>Positivity %</h2>
+            <div id="graph-positivity"></div>
+        </div>
+        <div class="col-xl-4 col-lg-6">
+            <h2>Tests / 100k</h2>
+            <div id="graph-tests"></div>
+        </div>
+        <div class="col-xl-4 col-lg-6">
+            <h2>Admissions / 100k</h2>
+            <div id="graph-admissions"></div>
+        </div>
+        <div class="col-xl-4 col-lg-6">
+            <h2>Patients / 100k</h2>
+            <div id="graph-patients"></div>
+        </div>
+        <div class="col-xl-4 col-lg-6">
+            <h2>Deaths / 100k</h2>
+            <div id="graph-deaths"></div>
+        </div>
+        <div class="col-xl-4 col-lg-6">
+            <h2>Vaccinated / 100k</h2>
+            <div id="graph-vaccinated"></div>
+        </div>
+    </div>
 
     <footer class="py-3 text-muted">
         <hr>
@@ -97,7 +102,7 @@
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
         crossorigin="anonymous"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="pages/history.mjs" type="module"></script>
+    <script src="pages/comparison.mjs" type="module"></script>
 </body>
 
 </html>

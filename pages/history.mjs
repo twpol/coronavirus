@@ -37,6 +37,7 @@ e.area.primary.innerText = area.primary[0];
 e.area.healthcare.innerText = area.healthcare[0];
 e.data.date.innerText = data.latestDate;
 e.nav.summary.href = `${getPage("summary")}?${getAreaQueryString(area)}`;
+e.nav.comparison.href = `${getPage("comparison")}?${getAreaQueryString(area)}`;
 
 setText("#population", data.population.toLocaleString());
 

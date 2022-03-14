@@ -83,6 +83,7 @@ export async function loadAreaData(area) {
   );
 
   const output = Object.create(null);
+  output.name = area.primary[0];
   output.date = [...data.date];
   output.fields = Object.create(null);
 
@@ -90,6 +91,7 @@ export async function loadAreaData(area) {
   output.healthcarePopulation = getPopulation(data, "newAdmissions");
 
   let latestIndex = RECENT_DAYS;
+  const latestIndexes = Object.create(null);
   for (const field of OUTPUT_FIELDS) {
     if (output[field.name] && output[field.name].length) {
       continue;
@@ -102,15 +104,16 @@ export async function loadAreaData(area) {
     if (values[RECENT_DAY]) {
       output[field.name] = field.type(values, output);
       output.fields[field.name] = field.field;
-      latestIndex = Math.min(
-        latestIndex,
-        output[field.name].findIndex((value) => !isNaN(value))
+      latestIndexes[field.name] = output[field.name].findIndex(
+        (value) => !isNaN(value)
       );
+      latestIndex = Math.min(latestIndex, latestIndexes[field.name]);
     } else {
       output[field.name] = [];
     }
   }
   output.latestDate = output.date[latestIndex];
+  output.latestIndexes = latestIndexes;
 
   return output;
 }
@@ -237,6 +240,21 @@ export function getDateForIndex(data, index) {
 
 function getISODate(date) {
   return date.toISOString().substring(0, 10);
+}
+
+export function getLatestRow(data, offset) {
+  const row = Object.create(null);
+  row.date = "";
+  row.dates = Object.create(null);
+  row.extrapolated = Object.create(null);
+  for (const field of OUTPUT_FIELDS.map((field) => field.name)) {
+    const index = data.latestIndexes[field] + offset;
+    if (!isNaN(index)) {
+      row[field] = data[field][index];
+      row.dates[field] = getDateForIndex(data, index);
+    }
+  }
+  return row;
 }
 
 export function getRowByIndex(data, index) {

@@ -1,5 +1,9 @@
 export const params = new URLSearchParams(location.search);
 
+export const paramGroups = location.search
+  .split(";")
+  .map((group) => new URLSearchParams(group));
+
 export function setQueryParam(name, value) {
   const newParams = new URLSearchParams(params);
   newParams.set(name, value);
@@ -13,5 +17,5 @@ export function replaceQueryParam(name, value) {
   } else {
     newParams.delete(name);
   }
-  history.replaceState(null, '', `?${newParams}`);
+  history.replaceState(null, "", `?${newParams}`);
 }

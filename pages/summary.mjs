@@ -3,7 +3,12 @@ import {
   getAreaQueryString,
 } from "../modules/area.mjs";
 import { plot } from "../modules/chart.mjs";
-import { getRowByIndex, loadAreaData, ROLLING_DAYS } from "../modules/data.mjs";
+import {
+  getLatestRow,
+  getRowByIndex,
+  loadAreaData,
+  ROLLING_DAYS,
+} from "../modules/data.mjs";
 import { getElements, getPage, setText } from "../modules/elements.mjs";
 import { tableRow } from "../modules/table.mjs";
 
@@ -17,6 +22,7 @@ e.area.primary.innerText = area.primary[0];
 e.area.healthcare.innerText = area.healthcare[0];
 e.data.date.innerText = data.latestDate;
 e.nav.history.href = `${getPage("history")}?${getAreaQueryString(area)}`;
+e.nav.comparison.href = `${getPage("comparison")}?${getAreaQueryString(area)}`;
 
 setText("#population", data.population.toLocaleString());
 
@@ -27,27 +33,16 @@ if (data.fields.tests === "uniquePeopleTestedBySpecimenDateRollingSum") {
 }
 
 const latestIndex = data.cases.findIndex((cases) => cases);
-const latestRow0 = Object.create(null);
-const latestRow1 = Object.create(null);
-latestRow0.date = "Most recent";
-latestRow0.dates = Object.create(null);
-latestRow0.extrapolated = Object.create(null);
-latestRow1.dates = Object.create(null);
 for (let index = 0; index <= latestIndex + ROLLING_DAYS; index++) {
   const row0 = getRowByIndex(data, index);
   const row1 = getRowByIndex(data, index + ROLLING_DAYS);
   e.summary.tbody.append(
     tableRow(row0, row1, { class: "expanded", extrapolated: false })
   );
-  for (const field of Object.keys(row0.fields)) {
-    if (!(field in latestRow0) && !(field in row0.extrapolated)) {
-      latestRow0.dates[field] = row0.date;
-      latestRow1.dates[field] = row1.date;
-      latestRow0[field] = row0[field];
-      latestRow1[field] = row1[field];
-    }
-  }
 }
+const latestRow0 = getLatestRow(data, 0);
+const latestRow1 = getLatestRow(data, ROLLING_DAYS);
+latestRow0.date = "Most recent";
 e.summary.tbody.append(
   tableRow(latestRow0, latestRow1, { class: "collapsed" })
 );

@@ -1,5 +1,5 @@
 import { fetchGenericApi } from "./api.mjs";
-import { params } from "./location.mjs";
+import { params, paramGroups } from "./location.mjs";
 
 const AREA_TYPES_PRIMARY = ["ltla", "utla", "region", "nation", "overview"];
 const AREA_TYPES_HEALTHCARE = ["nhsTrust", "nhsRegion", "nation", "overview"];
@@ -44,8 +44,7 @@ export function getAreaQueryString(area) {
     .join("&");
 }
 
-export function getAreaFromQueryString() {
-  const paramList = [...params];
+function getAreaFromQuery(paramList) {
   const primary = paramList.find(
     ([key]) =>
       key === "overview" ||
@@ -64,4 +63,12 @@ export function getAreaFromQueryString() {
     primary: [decodeURIComponent(primary[1]), primary[0]],
     healthcare: [decodeURIComponent(healthcare[1]), healthcare[0]],
   };
+}
+
+export function getAreaFromQueryString() {
+  return getAreaFromQuery([...params]);
+}
+
+export function getAreasFromQueryString() {
+  return paramGroups.map((params) => getAreaFromQuery([...params]));
 }
