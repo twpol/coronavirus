@@ -1,5 +1,6 @@
 import {
   getAreaQueryString,
+  getAreaQueryStringFromQuery,
   getAreasFromQueryString,
 } from "../modules/area.mjs";
 import { plot } from "../modules/chart.mjs";
@@ -14,6 +15,16 @@ const data = await Promise.all(areas.map((area) => loadAreaData(area)));
 const combinedAreas = areas.map((area) => area.primary[0]).join(", ");
 setText("h1", document.title + " of " + combinedAreas);
 document.title = [combinedAreas, document.title].join(" - ");
+
+e.area.submit.addEventListener("click", () => {
+  try {
+    const url = new URL(e.area.input.value);
+    const params = new URLSearchParams(url.search);
+    location.search += `;${getAreaQueryStringFromQuery(params)}`;
+  } catch (error) {
+    alert(`Input does not look like a link from this site\n\n${error}`);
+  }
+});
 
 for (let i = 0; i < areas.length; i++) {
   const latestRow0 = getLatestRow(data[i], 0);

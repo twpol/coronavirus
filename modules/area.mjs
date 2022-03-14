@@ -45,16 +45,11 @@ export function getAreaQueryString(area) {
 }
 
 function getAreaFromQuery(paramList) {
-  const primary = paramList.find(
-    ([key]) =>
-      key === "overview" ||
-      key === "nation" ||
-      key === "region" ||
-      key === "utla" ||
-      key === "ltla"
+  const primary = paramList.find(([key]) =>
+    AREA_TYPES_PRIMARY.includes(key)
   ) || ["", ""];
-  const healthcare = paramList.find(
-    ([key]) => key === "nation" || key === "nhsRegion" || key === "nhsTrust"
+  const healthcare = paramList.find(([key]) =>
+    AREA_TYPES_HEALTHCARE.includes(key)
   ) || [...primary];
   if (healthcare[0] === "region") {
     healthcare[0] = "nhsRegion";
@@ -71,4 +66,8 @@ export function getAreaFromQueryString() {
 
 export function getAreasFromQueryString() {
   return paramGroups.map((params) => getAreaFromQuery([...params]));
+}
+
+export function getAreaQueryStringFromQuery(params) {
+  return getAreaQueryString(getAreaFromQuery([...params]));
 }
