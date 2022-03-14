@@ -1,7 +1,10 @@
-import { getAreasFromQueryString } from "../modules/area.mjs";
+import {
+  getAreaQueryString,
+  getAreasFromQueryString,
+} from "../modules/area.mjs";
 import { plot } from "../modules/chart.mjs";
 import { getLatestRow, loadAreaData, ROLLING_DAYS } from "../modules/data.mjs";
-import { getElements, setText } from "../modules/elements.mjs";
+import { getElements, getPage, setText } from "../modules/elements.mjs";
 import { tableRow } from "../modules/table.mjs";
 
 const e = getElements();
@@ -19,11 +22,13 @@ for (let i = 0; i < areas.length; i++) {
   e.summary.tbody.append(
     tableRow(latestRow0, latestRow1, { class: "collapsed" })
   );
-  if (data[i].fields.tests === "uniquePeopleTestedBySpecimenDateRollingSum") {
-    e.summary.tbody.lastChild.firstChild.firstChild.after("¹");
-  } else {
-    e.summary.tbody.lastChild.firstChild.firstChild.after("²");
-  }
+  const unique =
+    data[i].fields.tests === "uniquePeopleTestedBySpecimenDateRollingSum";
+  e.summary.tbody.lastChild.firstChild.innerHTML = `<a href="${getPage(
+    "summary"
+  )}?${getAreaQueryString(areas[i])}">${areas[i].primary[0]}</a>${
+    unique ? "¹" : "²"
+  }`;
 }
 
 plot("cases", data);
