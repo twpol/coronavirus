@@ -33,13 +33,9 @@ for (let i = 0; i < areas.length; i++) {
   e.summary.tbody.append(
     tableRow(latestRow0, latestRow1, { class: "collapsed" })
   );
-  const unique =
-    data[i].fields.tests === "uniquePeopleTestedBySpecimenDateRollingSum";
   e.summary.tbody.lastChild.firstChild.innerHTML = `<a href="${getPage(
     "summary"
-  )}?${getAreaQueryString(areas[i])}">${areas[i].primary[0]}</a>${
-    unique ? "¹" : "²"
-  }`;
+  )}?${getAreaQueryString(areas[i])}">${areas[i].primary[0]}</a>`;
 }
 
 plot("cases", data);

@@ -41,12 +41,6 @@ e.nav.comparison.href = `${getPage("comparison")}?${getAreaQueryString(area)}`;
 
 setText("#population", data.population.toLocaleString());
 
-if (data.fields.tests === "uniquePeopleTestedBySpecimenDateRollingSum") {
-  e.history.tests.after("¹");
-} else {
-  e.history.tests.after("²");
-}
-
 if (date) {
   let index = getIndexForDate(data, date);
   while (addDataRow(index)) {

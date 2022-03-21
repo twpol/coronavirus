@@ -26,12 +26,6 @@ e.nav.comparison.href = `${getPage("comparison")}?${getAreaQueryString(area)}`;
 
 setText("#population", data.population.toLocaleString());
 
-if (data.fields.tests === "uniquePeopleTestedBySpecimenDateRollingSum") {
-  e.summary.tests.after("¹");
-} else {
-  e.summary.tests.after("²");
-}
-
 const latestIndex = data.cases.findIndex((cases) => cases);
 for (let index = 0; index <= latestIndex + ROLLING_DAYS; index++) {
   const row0 = getRowByIndex(data, index);

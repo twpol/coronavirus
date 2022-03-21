@@ -8,7 +8,6 @@ const INPUT_FIELDS = {
     "uniqueCasePositivityBySpecimenDateRollingSum",
     "cumPeopleVaccinatedCompleteByVaccinationDate",
     "newDeaths28DaysByDeathDate",
-    "uniquePeopleTestedBySpecimenDateRollingSum",
     "newVirusTestsByPublishDate",
   ],
   healthcare: [
@@ -52,11 +51,6 @@ const OUTPUT_FIELDS = [
     field: "newDeaths28DaysByDeathDate",
     ignore: 4,
     type: fieldTypeDelta,
-  },
-  {
-    name: "tests",
-    field: "uniquePeopleTestedBySpecimenDateRollingSum",
-    type: fieldTypeRollingSum,
   },
   {
     name: "tests",
