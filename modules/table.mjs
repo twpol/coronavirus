@@ -4,7 +4,7 @@ export function tableRow(row0, row1, options = {}) {
   return $(
     "tr",
     { class: options.class },
-    $("td", row0.date),
+    ...(options.labels || [$("td", row0.date)]),
     $("td", ...format("cases", row0, row1, options)),
     $("td", ...format("positivity", row0, row1, options)),
     $("td", ...format("tests", row0, row1, options)),
