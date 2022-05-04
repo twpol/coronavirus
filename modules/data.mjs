@@ -283,12 +283,3 @@ function getRowObject(data, index) {
   }
   return row;
 }
-
-export function getLatestDataMinMax(data) {
-  const values = Object.values(data.latestIndexes).filter(
-    (value) => value >= 0
-  );
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  return { min, max };
-}

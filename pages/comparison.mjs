@@ -5,7 +5,6 @@ import {
 } from "../modules/area.mjs";
 import { plot } from "../modules/chart.mjs";
 import {
-  getLatestDataMinMax,
   getLatestRow,
   loadAreaData,
   ROLLING_DAYS,
@@ -34,7 +33,6 @@ e.area.submit.addEventListener("click", () => {
 for (let i = 0; i < areas.length; i++) {
   const latestRow0 = getLatestRow(data[i], 0);
   const latestRow1 = getLatestRow(data[i], ROLLING_DAYS);
-  const { min, max } = getLatestDataMinMax(data[i]);
   e.summary.tbody.append(
     tableRow(latestRow0, latestRow1, {
       class: "collapsed",
@@ -49,8 +47,8 @@ for (let i = 0; i < areas.length; i++) {
         ),
         $(
           "td",
-          { title: `Latest data is ${min}-${max} days old (after processing)` },
-          `${min}-${max}`
+          { title: `Latest cases data is ${data[i].latestIndexes.cases} days old (after processing)` },
+          data[i].latestIndexes.cases
         ),
       ],
     })

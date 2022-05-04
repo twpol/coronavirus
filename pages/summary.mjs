@@ -4,7 +4,6 @@ import {
 } from "../modules/area.mjs";
 import { plot } from "../modules/chart.mjs";
 import {
-  getLatestDataMinMax,
   getLatestRow,
   getRowByIndex,
   loadAreaData,
@@ -37,8 +36,7 @@ for (let index = 0; index <= latestIndex + ROLLING_DAYS; index++) {
 }
 const latestRow0 = getLatestRow(data, 0);
 const latestRow1 = getLatestRow(data, ROLLING_DAYS);
-const { min, max } = getLatestDataMinMax(data);
-latestRow0.date = `Most recent (${min}-${max} days)`;
+latestRow0.date = 'Most recent';
 e.summary.tbody.append(
   tableRow(latestRow0, latestRow1, { class: "collapsed" })
 );
